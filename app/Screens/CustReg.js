@@ -1,16 +1,18 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { 
   ActivityIndicatorBase,
   StyleSheet, 
   Text, 
   TextInput, 
-  Image,
   TouchableOpacity, 
   View ,
   StatusBar,
   ImageBackground,
   Picker,
-  ScrollView
+  ScrollView,
+  Platform,
+  Button,
+  Image
 } from 'react-native';
 //import * as firebase from "firebase";
 import LoginScreen from './LoginScreen';
@@ -18,6 +20,8 @@ import { AuthContext } from '../navigation/AuthProvider';
 import { firebase } from '../navigation/firebase';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
 
 
 export default function CustReg({navigation}) {
@@ -29,6 +33,16 @@ export default function CustReg({navigation}) {
   const [mobileno, setmobile] = useState('')
   const [address, setaddress] = useState('')
   const [confirmPassword, setcofirmPassword] = useState('')
+  const [image,setImage]= useState(null);
+  const [selectedValue, setSelectedValue] = useState("Gender");
+  // useEffect( async () => {
+  //   if (Platform.OS !== 'web') {
+  //     const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       alert('Permission denied!')
+  //     }
+  //   }
+  // },[])
 
   // state={gender:""};
   // showgender=(option) =>{
@@ -36,7 +50,7 @@ export default function CustReg({navigation}) {
   //   this.setState({gender: option});
   // }
 
-  const [selectedValue, setSelectedValue] = useState("Gender");
+  
 
   const onRegisterPress = () => {
      if (password !== confirmPassword) {
@@ -68,7 +82,18 @@ export default function CustReg({navigation}) {
                   })
   }
 
- 
+    const PickImage = async() =>{
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing:true,
+        aspect:[4,3],
+        quality:1
+      })
+      console.log(result)
+      if (!result.cancelled) {
+        setImage(result.uri)
+      }
+    }
     return (
       <KeyboardAvoidingWrapper>
 
@@ -83,9 +108,15 @@ export default function CustReg({navigation}) {
         </TouchableOpacity>
 
         <Text style={styles.header}>Register as Customer</Text>
-        <Image
+        {/* <Image
           style={{width:105, height:111, top:'2%'}}
-          source={require('../assets/pic.png')}/>
+          source={require('../assets/pic.png')}/> */}
+        <Button title ="Choose Image" onPress={PickImage} />
+        {image && <Image source={{uri:image}} style={{
+          width:200,
+          height:200
+        }}/>}
+
         <TextInput style={styles.textinput1} 
         placeholder="First Name" 
         underlineColorAndroid={'transparent'}
@@ -108,7 +139,6 @@ export default function CustReg({navigation}) {
         labelValue={email}
         onChangeText={(userEmail)=>setEmail(userEmail)}
         placeholder="Email"
-
         autoCapitalize="none"
         autoCorrect={false}
         />

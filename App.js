@@ -37,6 +37,7 @@ const App=()=>{
           <AppStack.Screen name="ShopReg" component={ShopReg}/>
           <AppStack.Screen name="CategoryScreen" component={CategoryScreen}/>
           <AppStack.Screen name="ServiceScreen" component={ServiceScreen}/>
+          <AppStack.Screen name="Form" component={Form}/>
       </AppStack.Navigator>
     </NavigationContainer>
   );

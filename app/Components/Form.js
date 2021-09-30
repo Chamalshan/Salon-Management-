@@ -10,9 +10,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { firebase } from '../navigation/firebase';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 
-export default function CustReg({navigation}){
+
+const Form = ({navigation})=>{
 //export default function Form() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -23,17 +27,14 @@ export default function CustReg({navigation}){
           .then((response) => {
       const uid = response.user.uid
       const usersRef = firebase.firestore().collection('users')
-      
-      const usr = usersRef
           .doc(uid)
           .get()
-          .then(firestoreDocument => {
+          .then(firestoreDocument=> {
             if (!firestoreDocument.exists) {
-              const user = firestoreDocument.data()
-              navigation.navigate('MerchantReg', {user})
+              // const user = firestoreDocument.data()
+               navigation.navigate('MerchantReg')
             }else{
-            const user = firestoreDocument.data()
-            navigation.navigate('CustReg', {user})
+              navigation.navigate('CustReg')
             }
         })
       })
@@ -68,7 +69,10 @@ export default function CustReg({navigation}){
           </TouchableOpacity>
       </View>
     );
-  }
+    
+    };
+
+    export default Form;
 
   const styles= StyleSheet.create({
     container: {

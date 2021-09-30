@@ -1,4 +1,4 @@
-import React from 'react';
+import React,  { useContext, useState, useEffect } from 'react';
 import { 
   ActivityIndicatorBase,
   StyleSheet, 
@@ -9,12 +9,68 @@ import {
   View ,
   StatusBar,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  Button,
+  Picker,
 } from 'react-native';
+import { firebase } from '../navigation/firebase';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
-
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
 
 const ShopReg=({navigation})=>{
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [mobileno, setmobile] = useState('')
+  const [website, setWebsite] = useState('')
+  const [location, setLocation] = useState('')
+  const [appointments, setAppointments] = useState('')
+  const [image, setImage] = useState(null);
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setcofirmPassword] = useState('')
+
+  const onRegisterPress = () => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match.")
+      return
+  }
+   firebase
+       .auth()
+       .createUserWithEmailAndPassword(email, password)
+       .then((response) => {
+               const uid = response.user.uid
+               const data = {
+                   id: uid,
+                   name,
+                   email,
+                   mobileno,
+                   website,
+                   location,
+                   appointments
+               };
+               const usersRef = firebase.firestore().collection('shop')
+               usersRef
+                   .doc(uid)
+                   .set(data)
+                   .then(() => {
+                       navigation.navigate('SelectScreen', {user: data})
+                   })
+                 })
+ }
+
+  const PickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    })
+    console.log(result)
+    if (!result.cancelled) {
+      setImage(result.uri)
+    }
+  }
+
     return (
       <KeyboardAvoidingWrapper>
       <ImageBackground style={styles.container}
@@ -27,28 +83,97 @@ const ShopReg=({navigation})=>{
             />
         </TouchableOpacity>
         <Text style={styles.header}>Register your Salon</Text>
-        <Image
+        {/* <Image
           style={{width:105, height:111, top:'0%'}}
-          source={require('../assets/pic.png')}/>
-        <TextInput style={styles.textinput} placeholder="Shop Name" 
-        underlineColorAndroid={'transparent'}/>
-        <TextInput style={styles.textinput} placeholder="Email" 
-        underlineColorAndroid={'transparent'}/>
-        <TextInput style={styles.textinput} placeholder="Mobile" 
-        underlineColorAndroid={'transparent'}/>
-        <TextInput style={styles.textinput} placeholder="Gender" 
-        underlineColorAndroid={'transparent'}/>
-        <TextInput style={styles.textinput} placeholder="Website" 
-        underlineColorAndroid={'transparent'}/>
-        <TextInput style={styles.textinput} placeholder="Location" 
-        underlineColorAndroid={'transparent'}/>
-        <TextInput style={styles.textinput} placeholder="Appointments that can be handled once" 
-        underlineColorAndroid={'transparent'} secureTextEntry/>
-        <TextInput style={styles.textinput} placeholder="Service" 
-        underlineColorAndroid={'transparent'} secureTextEntry/>
+          source={require('../assets/pic.png')}/> */}
+        <TextInput style={styles.textinput} 
+          placeholder="Shop Name" 
+          underlineColorAndroid={'transparent'}
+          labelValue={name}
+          onChangeText={(name) => setName(name)}
+          autoCapitalize="none"
+          autoCorrect={false}/>
+
+        <TextInput style={styles.textinput} 
+          placeholder="Shop Name" 
+          underlineColorAndroid={'transparent'}
+          labelValue={name}
+          onChangeText={(name) => setName(name)}
+          autoCapitalize="none"
+          autoCorrect={false}/>
+
+        <TextInput style={styles.textinput} 
+          placeholder="Email" 
+          underlineColorAndroid={'transparent'}
+          labelValue={email}
+          onChangeText={(email) => setEmail(email)}
+          autoCapitalize="none"
+          autoCorrect={false}/>
+
+        <TextInput style={styles.textinput} 
+          placeholder="Mobile" 
+          underlineColorAndroid={'transparent'}
+          labelValue={mobileno}
+          onChangeText={(mobileno) => setmobile(mobileno)}
+          autoCapitalize="none"
+          autoCorrect={false}/>
+
+        <TextInput style={styles.textinput} 
+          placeholder="Website" 
+          underlineColorAndroid={'transparent'}
+          labelValue={website}
+          onChangeText={(website) => setWebsite(website)}
+          autoCapitalize="none"
+          autoCorrect={false}/>
+
+        <TextInput style={styles.textinput} 
+          placeholder="Location" 
+          underlineColorAndroid={'transparent'} 
+          labelValue={location}
+          onChangeText={(location) => setLocation(location)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+
+        <TextInput style={styles.textinput} 
+          placeholder="Appointments handled at once" 
+          underlineColorAndroid={'transparent'} 
+          labelValue={appointments}
+          onChangeText={(appointments) => setAppointments(appointments)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+          <TextInput style={styles.textinput} 
+        labelValue={password}
+        onChangeText={(userPassword)=>setPassword(userPassword)}
+        placeholder="Password"
+        secureTextEntry={true}
+        />
+        
+        <TextInput style={styles.textinput} 
+        placeholder=" Confirm Password" 
+        underlineColorAndroid={'transparent'} 
+        secureTextEntry={true}
+        labelValue={confirmPassword}
+        onChangeText={(confirmPassword)=>setcofirmPassword(confirmPassword)}
+        />
+
+        <Button title="Choose Image" onPress={PickImage} />
+          {image && <Image source={{ uri: image }} style={{
+          width: 100,
+          height: 100
+        }} />}
+         <Button title="Choose Image" onPress={PickImage} />
+            {image && <Image source={{ uri: image }} style={{
+            width: 100,
+            height: 100,
+            position:'absolute'
+        }} />}
+        
         <TouchableOpacity style={styles.button}>
-            <Text style={styles.btnTxt}>
-                Sign Up
+            <Text style={styles.btnTxt}
+            onPress={() => { onRegisterPress() }}>
+                Register
             </Text>
         </TouchableOpacity>
       </ImageBackground>

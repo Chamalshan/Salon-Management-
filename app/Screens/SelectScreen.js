@@ -21,7 +21,7 @@ const SelectScreen=({navigation})=>{
                   Sign Up as User</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button2}
-          onPress={() => navigation.navigate ("MerchantReg")}>
+          onPress={() => navigation.navigate ("ShopReg")}>
               <Text style={styles.btnTxt}>
                   Sign Up as Merchant</Text>
           </TouchableOpacity>

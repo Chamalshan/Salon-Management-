@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-    ImageBackground,
+  ImageBackground,
   StyleSheet, 
   Text, 
   TouchableOpacity, 
@@ -19,7 +19,7 @@ const LoginScreen=({navigation})=>{
       <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
       <View >
         <Logo/>
-        <Form type="Login"/>
+        <Form type="Login" navigation={navigation}/>
         <View style={styles.signupTextCont}>
           <Text style={styles.signupText}>Are you a new user?</Text>
           <TouchableOpacity>
