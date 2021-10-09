@@ -20,6 +20,7 @@ import Constants from 'expo-constants';
 
 const ShopReg=({navigation})=>{
   const [name, setName] = useState('')
+  const [oname, setOname] = useState('')
   const [email, setEmail] = useState('')
   const [mobileno, setmobile] = useState('')
   const [website, setWebsite] = useState('')
@@ -42,18 +43,20 @@ const ShopReg=({navigation})=>{
                const data = {
                    id: uid,
                    name,
+                   oname,
                    email,
                    mobileno,
                    website,
                    location,
-                   appointments
+                   appointments,
+                   password
                };
                const usersRef = firebase.firestore().collection('shop')
                usersRef
                    .doc(uid)
                    .set(data)
                    .then(() => {
-                       navigation.navigate('SelectScreen', {user: data})
+                       navigation.navigate('Dashboard', {user: data})
                    })
                  })
  }
@@ -79,7 +82,7 @@ const ShopReg=({navigation})=>{
           <Image
             style={{width:28, height:28,position:'absolute',top:"10%",left:"-45%",}}
             source={require('../assets/back.png')}
-            onPress={() => navigation.navigate("SelectScreen")}
+            onPress={() => navigation.navigate("Dashboard")}
             />
         </TouchableOpacity>
         <Text style={styles.header}>Register your Salon</Text>
@@ -95,10 +98,10 @@ const ShopReg=({navigation})=>{
           autoCorrect={false}/>
 
         <TextInput style={styles.textinput} 
-          placeholder="Shop Name" 
+          placeholder="Owner Name" 
           underlineColorAndroid={'transparent'}
-          labelValue={name}
-          onChangeText={(name) => setName(name)}
+          labelValue={oname}
+          onChangeText={(name) => setOname(name)}
           autoCapitalize="none"
           autoCorrect={false}/>
 

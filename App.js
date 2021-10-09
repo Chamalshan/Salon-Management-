@@ -18,6 +18,8 @@ import ShopReg from './app/Screens/ShopReg';
 import CategoryScreen from './app/Screens/CategoryScreen';
 import ServiceScreen from './app/Screens/ServiceScreen';
 import Form from './app/Components/Form';
+import Dashboard from './app/Screens/DashboardScreen';
+import CDashboard from './app/Screens/CDashborad';
 import * as firebase from "firebase";
 
 const AppStack= createStackNavigator();
@@ -38,6 +40,8 @@ const App=()=>{
           <AppStack.Screen name="CategoryScreen" component={CategoryScreen}/>
           <AppStack.Screen name="ServiceScreen" component={ServiceScreen}/>
           <AppStack.Screen name="Form" component={Form}/>
+          <AppStack.Screen name="Dashboard" component ={Dashboard}/>
+          <AppStack.Screen name="CDashboard" component ={CDashboard}/>
       </AppStack.Navigator>
     </NavigationContainer>
   );

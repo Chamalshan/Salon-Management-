@@ -32,9 +32,9 @@ const Form = ({navigation})=>{
           .then(firestoreDocument=> {
             if (!firestoreDocument.exists) {
               // const user = firestoreDocument.data()
-               navigation.navigate('MerchantReg')
-            }else{
-              navigation.navigate('CustReg')
+               navigation.navigate('Dashboard')
+              }else{
+              navigation.navigate('CDashboard')
             }
         })
       })

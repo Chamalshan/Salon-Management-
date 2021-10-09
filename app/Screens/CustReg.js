@@ -77,7 +77,7 @@ export default function CustReg({navigation}) {
                     .doc(uid)
                     .set(data)
                     .then(() => {
-                        navigation.navigate('Login', {user: data})
+                        navigation.navigate('CDashboard', {user: data})
                     })
                   })
   }
