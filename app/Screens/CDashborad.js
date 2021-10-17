@@ -8,7 +8,8 @@ import HomeScreen from './cHomeScreen';
 import AppointmentScreen from './cAppointments';
 import ProfileScreen from './cProfileScreen';
 import CategoryScreen from './CategoryScreen';
-
+import Service from './ServiceScreen';
+import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 // function HomeScreen(){
 //   return(
 //     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
@@ -30,6 +31,7 @@ const Tab = createBottomTabNavigator();
 
 const CDashboard=({navigation})=>{
   return (
+      <KeyboardAvoidingWrapper>
       <Tab.Navigator
         screenOptions={{
             headerShown: false,
@@ -136,7 +138,32 @@ const CDashboard=({navigation})=>{
             ),
         }}
         />
+
+{/* <Tab.Screen name="Service" component={Service} 
+        options={{
+            tabBarIcon: ({ focused }) => (
+                <View style={{
+                    top:15,
+                    justifyContent:'center',
+                    alignItems:'center',            
+                    width:50,
+                    height:50,
+                    backgroundColor: focused ? '#3A292A' : '#fff',
+                    borderRadius: 25,
+                }}>
+                    <Image 
+                     source={require ('../assets/Category.png')} 
+                     resizeMode='contain'
+                     style={{
+                         width:30,
+                         height:30,
+                         tintColor: focused ? '#fff' : '#3A292A',
+                    }}/>
+                </View>
+            ),
+        }} /> */}
       </Tab.Navigator>
+      </KeyboardAvoidingWrapper>
   );
 }
 

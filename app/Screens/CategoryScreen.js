@@ -4,24 +4,40 @@ import {
   Text, 
   TouchableOpacity, 
   View,
-  ImageBackground 
+  ImageBackground,
+  Image 
 } from 'react-native';
+import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
 const CategoryScreen=({navigation})=>{
     return (
+      <KeyboardAvoidingWrapper>
       <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
         <View style={styles.signupTextCont}>
           <Text style={styles.welcome}>
             Categories
           </Text>
+          
           <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate ("ServiceScreen")}>
               <Text style={styles.btnTxt}>
                   Category 1</Text>
           </TouchableOpacity>
-          </View>
+        
+          <TouchableOpacity style={styles.backbutton}
+            onPress={() => navigation.navigate("Home")}>
+              <Image
+                style={{width:28, height:28}}
+                source={require('../assets/back.png')}
+              /> 
+          </TouchableOpacity>
+
           
+        </View>
       </ImageBackground>
+      </KeyboardAvoidingWrapper>
     );
   }
 
@@ -66,4 +82,17 @@ const CategoryScreen=({navigation})=>{
       top:'21%',
       left:'-22%',
     },
+
+    backbutton:{
+      backgroundColor:'rgba(52, 52, 52, 0)',   
+      borderRadius:25,
+      width:200,
+      position:'absolute',
+      top:'1%',
+      left:'-25%',
+    },
+
+   
+
+
 });

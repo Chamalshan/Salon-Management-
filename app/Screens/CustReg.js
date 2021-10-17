@@ -99,7 +99,8 @@ export default function CustReg({navigation}) {
 
       <ImageBackground style={styles.container}
         source={require('../assets/bg-01.png')}>
-        <TouchableOpacity>
+        <TouchableOpacity
+        >
           <Image
             style={{width:28, height:28,position:'absolute',top:"10%",left:"-45%",}}
             source={require('../assets/back.png')}
