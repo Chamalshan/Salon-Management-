@@ -20,6 +20,12 @@ import ServiceScreen from './app/Screens/ServiceScreen';
 import Form from './app/Components/Form';
 import Dashboard from './app/Screens/DashboardScreen';
 import CDashboard from './app/Screens/CDashborad';
+import Advertisements from './app/Screens/Advertisements';
+import EditSalonProfile from './app/Screens/EditSalonProfile';
+import PendingAppointment from './app/Screens/pendingApp';
+import ShowAppointment from './app/Screens/showAppo';
+import CancelledAppointments from './app/Screens/cancelledappo';
+import CompletedAppointments from './app/Screens/completedAppo';
 import * as firebase from "firebase";
 
 const AppStack= createStackNavigator();
@@ -42,7 +48,13 @@ const App=()=>{
           <AppStack.Screen name="Form" component={Form}/>
           <AppStack.Screen name="Dashboard" component ={Dashboard}/>
           <AppStack.Screen name="CDashboard" component ={CDashboard}/>
-      </AppStack.Navigator>
+          <AppStack.Screen name="Advertisments" component={Advertisements}/>
+          <AppStack.Screen name="EditSalonProfile" component={EditSalonProfile}/>
+          <AppStack.Screen name="PendingAppointment" component={PendingAppointment}/>
+          <AppStack.Screen name="ShowAppointment" component={ShowAppointment}/>
+          <AppStack.Screen name="CancelledAppointments" component={CancelledAppointments}/>
+          <AppStack.Screen name="CompletedAppointments" component={CompletedAppointments}/>
+      </AppStack.Navigator> 
     </NavigationContainer>
   );
 }

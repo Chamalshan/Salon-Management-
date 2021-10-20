@@ -1,5 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+
+import React, { useState,useEffect }  from 'react';
 import { Text,
     StyleSheet, 
     View,
@@ -9,6 +9,7 @@ import { Text,
    TouchableOpacity,
    TextInput } from 'react-native';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
+import { firebase } from '../navigation/firebase';
 
 const cProfileScreen=({navigation})=>{
     return (

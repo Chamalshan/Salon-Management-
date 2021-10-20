@@ -26,15 +26,21 @@ const Form = ({navigation})=>{
           .signInWithEmailAndPassword(email, password)
           .then((response) => {
       const uid = response.user.uid
+      // const uId = uid
       const usersRef = firebase.firestore().collection('users')
           .doc(uid)
           .get()
           .then(firestoreDocument=> {
+            console.log('User data: ', firestoreDocument.data());
             if (!firestoreDocument.exists) {
               // const user = firestoreDocument.data()
+              let uId= uid;
                navigation.navigate('Dashboard')
+               console.log('logedin');
               }else{
-              navigation.navigate('CDashboard')
+              let uId= {name:'Saman',age:'21'};
+              navigation.navigate('CDashboard',uId)
+              console.log('logedin',uId);
             }
         })
       })
@@ -73,7 +79,6 @@ const Form = ({navigation})=>{
     };
 
     export default Form;
-
   const styles= StyleSheet.create({
     container: {
       flexGrow: 1,

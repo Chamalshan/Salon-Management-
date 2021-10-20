@@ -30,6 +30,7 @@ import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 const Tab = createBottomTabNavigator();
 
 const CDashboard=({navigation})=>{
+    
   return (
       <KeyboardAvoidingWrapper>
       <Tab.Navigator
