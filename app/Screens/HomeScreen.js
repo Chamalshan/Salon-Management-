@@ -13,6 +13,8 @@ import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import Advertisements from './Advertisements';
 
 const HomeScreen=({navigation})=>{
+
+    
     return (
             <KeyboardAvoidingWrapper>
                 <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>

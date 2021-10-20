@@ -16,47 +16,51 @@ import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { UserLogOut } from '../Components/UserLogOut';
 import CategoryScreen from './CategoryScreen';
 import * as firebase from 'firebase';
-import firestore from '@firebase/firestore';
+import firestore from 'firebase/firestore';
 
 // import { uId } from '../Components/Form';
 
-const CHomeScreen=({routes,navigation})=>{
+const CHomeScreen=({route,navigation})=>{
     
     const [userData, setUserData] = useState(null);
-    // const {userid} = uid;
-    // const profile= async() => {
-    //     await firestore()
-    //         .collection('users')
-    //         .doc(id)
-    //         .get()
-    //         .then(documentSnapshot => {
-    //         console.log('User data: ', documentSnapshot.data());
-    //         });
-    // }
-    // console.log(navigation)
-    // const {uId}=routes.params;
-    // console.log(uId)
+    const [firstname, setfirstname]= useState();
 
-    const getUser = async() => {
-        const currentUser = await firestore()
-        .collection('users')
-        .doc(user.id)
-        .get()
-        .then((documentSnapshot) => {
-          if( documentSnapshot.exists ) {
-            console.log('User Data', documentSnapshot.data());
-            setUserData(documentSnapshot.data());
-            console.log(documentSnapshot.data());
-          }
-        })
-      }
+    console.log(navigation)
+    const {id}=route.params.uId;
+    console.log('Home',id)
+    const profile= async() => {
+        const currentuser = await firestore()
+            .collection('users')
+            .doc(id)
+            .get()
+            .then((documentSnapshot) => {
+            console.log('User data 11: ', documentSnapshot.data().firstname);
+            setUserData(documentSnapshot.data().firstname);
+            })
+            .catch(error => {
+                console.log(error);
+              })
+    }
+
     
+
+    // const usersRef = firebase
+    //     .auth()
+    //     .firestore().collection('users')
+    //     .where(id = 'id')
+    //     .get()
+    //     .then(firestoreDocument=> {
+    //         console.log('User data 222: ', firestoreDocument.data());
+    //     });
+useEffect(() =>{
+    profile();
+}, []);
 
     return (
         <KeyboardAvoidingWrapper>
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
             <View style={styles.helloTextCont}>
-                <Text style={styles.hellotext1}>Hello !</Text>    
+                <Text style={styles.hellotext1}>Hello {firstname}!</Text>    
                 <Image
                     style={styles.bell}
                     source={require('../assets/Bell.png')}

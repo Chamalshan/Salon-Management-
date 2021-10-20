@@ -31,16 +31,16 @@ const Form = ({navigation})=>{
           .doc(uid)
           .get()
           .then(firestoreDocument=> {
-            console.log('User data: ', firestoreDocument.data());
+            console.log('User data 222: ', firestoreDocument.data());
             if (!firestoreDocument.exists) {
               // const user = firestoreDocument.data()
-              let uId= uid;
+              // let uId= uid;
                navigation.navigate('Dashboard')
-               console.log('logedin');
+              //  console.log('logedin');
               }else{
-              let uId= {name:'Saman',age:'21'};
-              navigation.navigate('CDashboard',uId)
-              console.log('logedin',uId);
+                let uId= {id:firestoreDocument.id};
+              navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
+              console.log('logedin as customer',uId);
             }
         })
       })
