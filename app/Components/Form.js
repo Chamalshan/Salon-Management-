@@ -20,6 +20,7 @@ const Form = ({navigation})=>{
 //export default function Form() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [user,setuser]= useState()
   const onLoginPress = () => {
       firebase
           .auth()
@@ -30,16 +31,15 @@ const Form = ({navigation})=>{
       const usersRef = firebase.firestore().collection('users')
           .doc(uid)
           .get()
-          .then(firestoreDocument=> {
+          .then((firestoreDocument)=> {
             console.log('User data 222: ', firestoreDocument.data());
             if (!firestoreDocument.exists) {
-              // const user = firestoreDocument.data()
-              // let uId= uid;
-               navigation.navigate('Dashboard')
-              //  console.log('logedin');
+              let uId= {id:firestoreDocument.id};
+              navigation.navigate('Dashboard',{screen:'Profile',params:{uId}})||navigation.navigate('Dashboard',{screen:'Home',params:{uId}});
+              console.log('logedin as customer',uId);
               }else{
                 let uId= {id:firestoreDocument.id};
-              navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
+              navigation.navigate('CDashboard',{screen:'Profile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
               console.log('logedin as customer',uId);
             }
         })

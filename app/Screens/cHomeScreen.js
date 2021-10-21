@@ -11,12 +11,12 @@ import { StyleSheet,
     TextInput,
     Button
 } from 'react-native';
-import { SearchBar } from 'react-native-screens';
+import { SearchBar } from 'react-native-elements';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { UserLogOut } from '../Components/UserLogOut';
 import CategoryScreen from './CategoryScreen';
 import * as firebase from 'firebase';
-import firestore from 'firebase/firestore';
+import firestore from '@firebase/firestore';
 
 // import { uId } from '../Components/Form';
 
@@ -24,23 +24,32 @@ const CHomeScreen=({route,navigation})=>{
     
     const [userData, setUserData] = useState(null);
     const [firstname, setfirstname]= useState();
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const onChangeSearch = query => setSearchQuery(query);
 
     console.log(navigation)
     const {id}=route.params.uId;
     console.log('Home',id)
+
     const profile= async() => {
-        const currentuser = await firestore()
+        const currentuser = await 
+            firebase
+            .firestore()
             .collection('users')
             .doc(id)
             .get()
             .then((documentSnapshot) => {
             console.log('User data 11: ', documentSnapshot.data().firstname);
             setUserData(documentSnapshot.data().firstname);
+            setfirstname(documentSnapshot.data().firstname);
             })
             .catch(error => {
                 console.log(error);
               })
     }
+    useEffect(() =>{
+        profile();
+    }, []);
 
     
 
@@ -52,15 +61,12 @@ const CHomeScreen=({route,navigation})=>{
     //     .then(firestoreDocument=> {
     //         console.log('User data 222: ', firestoreDocument.data());
     //     });
-useEffect(() =>{
-    profile();
-}, []);
 
     return (
         <KeyboardAvoidingWrapper>
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
             <View style={styles.helloTextCont}>
-                <Text style={styles.hellotext1}>Hello {firstname}!</Text>    
+                <Text style={styles.hellotext1}>Hello {firstname} !</Text>    
                 <Image
                     style={styles.bell}
                     source={require('../assets/Bell.png')}
@@ -70,25 +76,25 @@ useEffect(() =>{
                     source={require('../assets/tree.png')}
                 />
             
-                <TextInput style={styles.SearchBarinput} 
-                        underlineColorAndroid='rgba(0,0,0,0)' 
-                        placeholder='Search'
-                        autoCapitalize="none"
-                        placeholderTextColor='#3A292A'
-                    />
+                <SearchBar 
+                    platform='android'
+                    cancelButtonTitle='cancel'
+                    round
+                    searchIcon={{ size: 24 }}
+                    containerStyle={styles.SearchBarinput}
+                    inputContainerStyle={{width:375,top:'-2%',left:'0%'}}
+                    placeholder="Search Salon"
+                    onChangeText={onChangeSearch}
+                    value={searchQuery}
+                />
 
+                
                 <View style={styles.advertismentbox}/>
 
                 
                 <Text style={styles.categorytext}>Categories</Text>
-                    <TouchableOpacity
-                        style={styles.viewalltextCont}
-                        onPress={() => navigation.navigate('Category')}
-                    >
-                    <Text style={styles.viewalltext}>View All</Text>
-                    </TouchableOpacity>
                 <View style={styles.categorybox1}/>
-                <View style={styles.categorybox2}/> 
+                <View style={styles.categorybox2}/>   
                                   
             </View>
             </ImageBackground>
@@ -154,7 +160,7 @@ const styles = StyleSheet.create({
         marginVertical:10,
         marginHorizontal:10,
         position:"absolute",
-        top:"8%",
+         top:"8%",
     },
 
     advertismentbox:{
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         fontSize:25,
         top:"45%",
-        left:"-45%",
+        left:"-40%",
         color:"#3A292A",
         position:"absolute",
     },

@@ -29,7 +29,7 @@ const ShopReg=({navigation})=>{
   const [image, setImage] = useState(null);
   const [password, setPassword] = useState('')
   const [confirmPassword, setcofirmPassword] = useState('')
-
+  const [regno, setregno] = useState('')
   const onRegisterPress = () => {
     if (password !== confirmPassword) {
       alert("Passwords don't match.")
@@ -44,6 +44,7 @@ const ShopReg=({navigation})=>{
                    id: uid,
                    name,
                    oname,
+                   regno,
                    email,
                    mobileno,
                    website,
@@ -105,6 +106,13 @@ const ShopReg=({navigation})=>{
           autoCapitalize="none"
           autoCorrect={false}/>
 
+        <TextInput style={styles.textinput}
+        placeholder="Shop Register No" 
+        underlineColorAndroid={'transparent'} 
+        labelValue={regno}
+        onChangeText={(regno)=>setregno(regno)}
+        />
+
         <TextInput style={styles.textinput} 
           placeholder="Email" 
           underlineColorAndroid={'transparent'}
@@ -160,6 +168,8 @@ const ShopReg=({navigation})=>{
         labelValue={confirmPassword}
         onChangeText={(confirmPassword)=>setcofirmPassword(confirmPassword)}
         />
+
+        
 
         <Button title="Choose Image" onPress={PickImage} />
           {image && <Image source={{ uri: image }} style={{
@@ -244,8 +254,8 @@ export default ShopReg;
       shadowRadius:100,
       marginVertical:10,
       marginHorizontal:10,
-      position:'absolute',
-      top:'86.5%',
+      position:'relative',
+      
       //left:'40%',
     },
 });

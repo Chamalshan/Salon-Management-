@@ -26,6 +26,8 @@ import PendingAppointment from './app/Screens/pendingApp';
 import ShowAppointment from './app/Screens/showAppo';
 import CancelledAppointments from './app/Screens/cancelledappo';
 import CompletedAppointments from './app/Screens/completedAppo';
+import ChooseSalon from './app/Screens/ChooseSalon';
+import CeditProfile from './app/Screens/ceditProfile';
 import * as firebase from "firebase";
 
 const AppStack= createStackNavigator();
@@ -54,6 +56,8 @@ const App=()=>{
           <AppStack.Screen name="ShowAppointment" component={ShowAppointment}/>
           <AppStack.Screen name="CancelledAppointments" component={CancelledAppointments}/>
           <AppStack.Screen name="CompletedAppointments" component={CompletedAppointments}/>
+          <AppStack.Screen name="ChooseSalon" component={ChooseSalon}/>
+          <AppStack.Screen name="CeditProfile" component={CeditProfile}/>
       </AppStack.Navigator> 
     </NavigationContainer>
   );

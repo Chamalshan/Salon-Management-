@@ -29,8 +29,9 @@ import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 
 const Tab = createBottomTabNavigator();
 
-const CDashboard=({navigation})=>{
+const CDashboard=({navigation,route})=>{
     
+
   return (
       <KeyboardAvoidingWrapper>
       <Tab.Navigator
@@ -116,6 +117,7 @@ const CDashboard=({navigation})=>{
         }}
         />
         <Tab.Screen name="Profile" component={ProfileScreen}
+
          options={{
             tabBarIcon: ({ focused }) => (
                 <View style={{

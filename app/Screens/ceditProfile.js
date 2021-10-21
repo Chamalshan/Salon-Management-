@@ -24,27 +24,25 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 
 export default function CustReg({ navigation,route }) {
-  const [name, setName] = useState('')
-  const [oname, setOname] = useState('')
-  const [email, setEmail] = useState('')
-  const [mobileno, setmobile] = useState('')
-  const [website, setWebsite] = useState('')
-  const [location, setLocation] = useState('')
-  const [appointments, setAppointments] = useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
+  const [gender, setgender] = useState("");
+  const [mobileno, setmobile] = useState("");
+  const [address, setaddress] = useState("");
+  const [confirmPassword, setcofirmPassword] = useState("");
   const [image, setImage] = useState(null);
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setcofirmPassword] = useState('')
-  const [regno, setregno] = useState('')
+  const [selectedValue, setSelectedValue] = useState("Gender");
   const [state, setState] = useState("");
   const [userData, setUserData] = useState(null);
-  const [getname, setgetName] = useState('')
-  const [getoname, setgetOname] = useState('')
-  const [getemail, setgetEmail] = useState('')
-  const [getmobileno, setgetmobile] = useState('')
-  const [getwebsite, setgetWebsite] = useState('')
-  const [getlocation, setgetLocation] = useState('')
-  const [getappointments, setgetAppointments] = useState('')
-  const [getregno, setgetregno] = useState('')
+  const [getfirstname, setgetfirstname] = useState();
+  const [getlastname, setgetlastname] = useState();
+  const [gettelephone, setgettelephone] = useState();
+  const [getaddress, setgetaddress] = useState();
+  const [getgender, setgetgender] = useState();
+  const [getemail, setgetemail]=useState();
+  const [getdob, setgetdob] = useState();
 
   // useEffect( async () => {
   //   if (Platform.OS !== 'web') {
@@ -68,22 +66,21 @@ export default function CustReg({ navigation,route }) {
   const profile = async () => {
       const currentuser = await firebase
         .firestore()
-        .collection("shop")
+        .collection("users")
         .doc(id)
         .get()
         .then((documentSnapshot) => {
           console.log(
-            "User data 11: ",documentSnapshot.data().name
+            "User data 11: ",
+            documentSnapshot.data().firstname.lastname
           );
-          setUserData(documentSnapshot.data().name);
-          setgetName(documentSnapshot.data().name);
-          setgetOname(documentSnapshot.data().oname);
-          setgetEmail(documentSnapshot.data().email);
-          setgetmobile(documentSnapshot.data().mobileno);
-          setgetLocation(documentSnapshot.data().location);
-          setgetWebsite(documentSnapshot.data().website);
-          setgetregno(documentSnapshot.data().regno);
-          setgetAppointments(documentSnapshot.data().appointments);
+          setUserData(documentSnapshot.data().firstname);
+          setgetfirstname(documentSnapshot.data().firstname);
+          setgetlastname(documentSnapshot.data().lastname);
+          setgettelephone(documentSnapshot.data().mobileno);
+          setgetaddress(documentSnapshot.data().address);
+          setgetgender(documentSnapshot.data().gender);
+          setgetemail(documentSnapshot.data().email);
         //   setgetpassword(documentSnapshot.data().password);
         })
         .catch((error) => {
@@ -101,18 +98,15 @@ const onUpdatePress = () => {
     // }
 
     const data = {
-      name,
-      oname,
-      regno,
-      email,
-      mobileno,
-      website,
-      location,
-      appointments,
-      // password
-        
+        email,
+        firstname,
+        lastname,
+        gender,
+        mobileno,
+        address,
+        // password,
     };
-    const usersRef = firebase.firestore().collection("shop")
+    const usersRef = firebase.firestore().collection("users")
         usersRef
         .doc(id)
         .update(data)
@@ -196,78 +190,106 @@ const onUpdatePress = () => {
           />
         )}
 
-<TextInput style={styles.textinput} 
-          placeholder={getname}
-          defaultValue={getname} 
-          underlineColorAndroid={'transparent'}
-          labelValue={getname}
-          onChangeText={(name) => setName(name)}
-          autoCapitalize="none"
-          autoCorrect={false}/>
+        <Text></Text>
 
-        <TextInput style={styles.textinput} 
-          placeholder={getoname}
-          defaultValue={getoname} 
-          underlineColorAndroid={'transparent'}
-          labelValue={getoname}
-          onChangeText={(oname) => setOname(oname)}
+        <TextInput
+          style={styles.textinput1}
+          placeholder={getfirstname}
+          defaultValue={getfirstname}
+          underlineColorAndroid={"transparent"}
+          labelValue={getfirstname}
+          onChangeText={(firstname) => setfirstname(firstname)}
           autoCapitalize="none"
-          autoCorrect={false}/>
-
-        <TextInput style={styles.textinput}
-        placeholder={getregno}
-        defaultValue={getregno} 
-        underlineColorAndroid={'transparent'} 
-        labelValue={getregno}
-        onChangeText={(regno)=>setregno(regno)}
+          autoCorrect={false}
         />
 
-        <TextInput style={styles.textinput} 
-          placeholder={getemail}
-          defaultValue={getemail} 
-          underlineColorAndroid={'transparent'}
-          labelValue={getemail}
-          onChangeText={(email) => setEmail(email)}
+        <TextInput
+          style={styles.textinput2}
+          placeholder={getlastname}
+          defaultValue={getlastname}
+          underlineColorAndroid={"transparent"}
+          labelValue={getlastname}
+          onChangeText={(lastname) => setlastname(lastname)}
           autoCapitalize="none"
-          autoCorrect={false}/>
+          autoCorrect={false}
+        />
 
-        <TextInput style={styles.textinput} 
-          placeholder={getmobileno}
-          defaultValue={getmobileno} 
-          underlineColorAndroid={'transparent'}
-          labelValue={getmobileno}
+        <TextInput
+          style={styles.textinput}
+          placeholder={getemail}
+          defaultValue={getemail}
+          labelValue={getemail}
+          onChangeText={(userEmail) => setEmail(userEmail)}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+
+        <View style={styles.pickercont}>
+            <Picker
+                itemStyle={{ backgroundColor: "#fff" }}
+                placeholder="Gender"
+                labelValue={getgender}
+                selectedValue={selectedValue}
+                    onValueChange={(gender, itemIndex) => {
+                    if (gender !== "disabled") {
+                    setSelectedValue(gender);
+                    }
+                    setgender(gender);
+                }}
+            >
+          <Picker.Item label="Gender" value="disabled" color="#aaa" />
+          <Picker.Item label="Male" value="Male" />
+          <Picker.Item label="Female" value="Female" />
+        </Picker>
+        </View>
+
+        <TextInput
+          style={styles.textinput4}
+          placeholder="Birthday"
+          underlineColorAndroid={"transparent"}
+        />
+
+        <TextInput
+          style={styles.textinput5}
+          defaultvalue={gettelephone}
+          placeholder={gettelephone}
+          underlineColorAndroid={"transparent"}
+          labelValue={gettelephone}
           onChangeText={(mobileno) => setmobile(mobileno)}
           autoCapitalize="none"
-          autoCorrect={false}/>
+          autoCorrect={false}
+        />
 
-        <TextInput style={styles.textinput} 
-          placeholder={getwebsite}
-          defaultValue={getwebsite} 
-          underlineColorAndroid={'transparent'}
-          labelValue={getwebsite}
-          onChangeText={(website) => setWebsite(website)}
-          autoCapitalize="none"
-          autoCorrect={false}/>
-
-        <TextInput style={styles.textinput} 
-          placeholder={getlocation}
-          defaultValue={getlocation} 
-          underlineColorAndroid={'transparent'} 
-          labelValue={getlocation}
-          onChangeText={(location) => setLocation(location)}
+        <TextInput
+          style={styles.textinput5}
+          
+          defaultValue={getaddress}
+          placeholder={getaddress}
+          underlineColorAndroid={"transparent"}
+          labelValue={getaddress}
+          onChangeText={(address) => setaddress(address)}
           autoCapitalize="none"
           autoCorrect={false}
-          />
+        />
 
-        <TextInput style={styles.textinput} 
-          placeholder={getappointments}
-          defaultValue={getappointments} 
-          underlineColorAndroid={'transparent'} 
-          labelValue={getappointments}
-          onChangeText={(appointments) => setAppointments(appointments)}
-          autoCapitalize="none"
-          autoCorrect={false}
-          />
+        {/* <TextInput
+          style={styles.textinput5}
+          defaultValue={getpassword}
+          placeholder={getpassword}
+          labelValue={password}
+          onChangeText={(userPassword) => setPassword(userPassword)}
+          placeholder="Password"
+          secureTextEntry={true}
+        />
+
+        <TextInput
+          style={styles.textinput5}
+          placeholder=" Confirm Password"
+          underlineColorAndroid={"transparent"}
+          secureTextEntry={true}
+          labelValue={confirmPassword}
+          onChangeText={(confirmPassword) => setcofirmPassword(confirmPassword)}
+        /> */}
 
         <TouchableOpacity
           style={styles.button}
@@ -312,7 +334,7 @@ const styles = StyleSheet.create({
   textinput: {
     width: 375,
     height: 40,
-    position:'relative',
+    top: "-6%",
     backgroundColor: "#fff",
     borderRadius: 25,
     paddingHorizontal: 16,
@@ -336,8 +358,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     color: "#3A292A",
-    // top: "1.4%",
-    // left: "-25%",
+    top: "1.4%",
+    left: "-25%",
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: {
@@ -347,7 +369,6 @@ const styles = StyleSheet.create({
     shadowRadius: 100,
     marginVertical: 10,
     marginHorizontal: 10,
-    position:'relative',
   },
   textinput2: {
     width: 175,

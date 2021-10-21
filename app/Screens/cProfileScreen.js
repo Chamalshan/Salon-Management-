@@ -11,7 +11,47 @@ import { Text,
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { firebase } from '../navigation/firebase';
 
-const cProfileScreen=({navigation})=>{
+const cProfileScreen=({navigation,route})=>{
+
+    const [userData, setUserData] = useState(null);
+    const [firstname, setfirstname]= useState();
+    const [lastname, setlastname] = useState();
+    const [telephone, settelephone] = useState();
+    const [address, setaddress] = useState();
+    const [gender, setgender] = useState();
+    const [dob, setdob] = useState();
+
+    console.log(navigation)
+    const {id}=route.params.uId;
+    console.log('Profile',id)
+    
+
+    const profile= async() => {
+        console.log("x")
+        const currentuser = await 
+            firebase
+            .firestore()
+            .collection('users')
+            .doc(id)
+            .get()
+            .then((documentSnapshot) => {
+                // console.log(documentSnapshot);
+            console.log('User data 11: ', documentSnapshot.data().firstname);
+            setUserData(documentSnapshot.data().firstname);
+            setfirstname(documentSnapshot.data().firstname);
+            setlastname(documentSnapshot.data().lastname);
+            settelephone(documentSnapshot.data().mobileno);
+            setaddress(documentSnapshot.data().address);
+            setgender(documentSnapshot.data().gender);
+            
+            })
+            .catch(error => {
+                console.log(error);
+              })
+    }
+    useEffect(() =>{
+        profile();
+    }, []);
     return (
         <KeyboardAvoidingWrapper>
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
@@ -22,21 +62,21 @@ const cProfileScreen=({navigation})=>{
                     style={styles.profilepic}
                     source={require("../assets/pic.png")}
                 />
-                <Text style={styles.nametext}       >Name</Text>
-                <Text style={styles.telephonetxt}   >Telephone  :</Text>
-                <Text style={styles.addresstxt}     >Address      :</Text>
-                <Text style={styles.gendertxt}      >Gender        :</Text>
+                <Text style={styles.nametext}       >{firstname} {lastname}</Text>
+                <Text style={styles.telephonetxt}   >Telephone  : {telephone}</Text>
+                <Text style={styles.addresstxt}     >Address      : {address}</Text>
+                <Text style={styles.gendertxt}      >Gender        : {gender}</Text>
                 <Text style={styles.dobtxt}         >Birth Date   :</Text>
 
-                <TouchableOpacity style={styles.editbtn}>
-                {/* onPress={() =>{onRegisterPress()}} */}
+                <TouchableOpacity style={styles.editbtn}
+                onPress={() =>navigation.navigate("CeditProfile",{id})}>
                     <Text style={styles.editbtnTxt}>
                      Edit Profile
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.logoutbtn}>
-                {/* onPress={() =>{onRegisterPress()}} */}
+                <TouchableOpacity style={styles.logoutbtn}
+                onPress={() =>navigation.navigate("Login")}>
                     <Text style={styles.logoutbtnTxt}>
                      Logout
                     </Text>

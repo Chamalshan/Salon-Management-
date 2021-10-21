@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState,useEffect }  from 'react';
 import { StyleSheet,Text, 
          View,
         Platform,
@@ -11,15 +11,44 @@ import { StyleSheet,Text,
                 } from 'react-native';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import Advertisements from './Advertisements';
+import * as firebase from 'firebase';
 
-const HomeScreen=({navigation})=>{
+const HomeScreen=({navigation,route})=>{
+    const [userData, setUserData] = useState(null);
+    const [name, setname]= useState();
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const onChangeSearch = query => setSearchQuery(query);
+
+    console.log(navigation)
+    const {id}=route.params.uId;
+    console.log('Home',id)
+
+    const profile= async() => {
+        const currentuser = await 
+            firebase
+            .firestore()
+            .collection('shop')
+            .doc(id)
+            .get()
+            .then((documentSnapshot) => {
+            console.log('User data 11: ', documentSnapshot.data().name);
+            setUserData(documentSnapshot.data().name);
+            setname(documentSnapshot.data().name);
+            })
+            .catch(error => {
+                console.log(error);
+              })
+    }
+    useEffect(() =>{
+        profile();
+    }, []);
 
     
     return (
             <KeyboardAvoidingWrapper>
                 <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
                 <View style={styles.helloTextCont}>
-                    <Text style={styles.hellotext1}>Hello !</Text>    
+                    <Text style={styles.hellotext1}>Hello {name}!</Text>    
     
                     <TouchableOpacity style={styles.appointmentCont}
                         onPress={() => navigation.navigate('Appointment')}

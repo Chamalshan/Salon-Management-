@@ -13,7 +13,7 @@ export default function App() {
   const [city, setcity] = useState('')
   const [selectedValue, setSelectedValue] = useState("Gender");
   return (
-    <ImageBackground style={styles.container} source={require("./assets/bg-01.png")}>
+    <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
       <Text style={styles.header}>Choose your Salon</Text>
       <Text style={styles.service}>Service</Text>
       <Text style={styles.salon}>Choose Salon</Text>

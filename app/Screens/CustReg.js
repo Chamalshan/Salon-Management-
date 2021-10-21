@@ -35,6 +35,8 @@ export default function CustReg({navigation}) {
   const [confirmPassword, setcofirmPassword] = useState('')
   const [image,setImage]= useState(null);
   const [selectedValue, setSelectedValue] = useState("Gender");
+  const [state, setState] = useState('')
+
   // useEffect( async () => {
   //   if (Platform.OS !== 'web') {
   //     const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -94,6 +96,37 @@ export default function CustReg({navigation}) {
         setImage(result.uri)
       }
     }
+
+    const formatNumber=(phoneNumberString)=>{
+      let newText='';
+      let cleaned=(''+phoneNumberString).replace(/\D/g, '')
+      
+      for(var i=0;i<cleaned.length;i++){
+        if(i==1){
+          if(newText==0){
+            newText='0';
+          }else{
+            alert("Badly Formatted");
+          }
+        }
+        if(i==2){
+          if(newText==7){
+            newText=newText;
+          }else{
+            alert("Badly Formatted");
+          }
+        }
+        if(i==3){
+          newText=newText+'-'
+        }
+        
+        
+        newText= newText+cleaned[i];
+      setState({mobileno:newText});
+      console.log('mobileno',state.mobileno,newText);
+      }
+    }
+
     return (
       <KeyboardAvoidingWrapper>
 
@@ -168,13 +201,15 @@ export default function CustReg({navigation}) {
         />
         
         <TextInput style={styles.textinput5} 
+        value={state.mobileno}
         placeholder="Mobile Number" 
         underlineColorAndroid={'transparent'}
         labelValue={mobileno}
-        onChangeText={(mobileno)=>setmobile(mobileno)}
+        onChangeText={(mobileno)=>formatNumber(mobileno)}
         autoCapitalize="none"
         autoCorrect={false}
         />
+
         
         <TextInput style={styles.textinput5} 
         placeholder="Address" 
