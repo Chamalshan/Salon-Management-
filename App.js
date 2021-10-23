@@ -28,6 +28,8 @@ import CancelledAppointments from './app/Screens/cancelledappo';
 import CompletedAppointments from './app/Screens/completedAppo';
 import ChooseSalon from './app/Screens/ChooseSalon';
 import CeditProfile from './app/Screens/ceditProfile';
+import SalonPage from './app/Screens/SalonPage';
+import CusApp from './app/Screens/CustApp'
 import * as firebase from "firebase";
 
 const AppStack= createStackNavigator();
@@ -58,6 +60,8 @@ const App=()=>{
           <AppStack.Screen name="CompletedAppointments" component={CompletedAppointments}/>
           <AppStack.Screen name="ChooseSalon" component={ChooseSalon}/>
           <AppStack.Screen name="CeditProfile" component={CeditProfile}/>
+          <AppStack.Screen name="Salon" component={SalonPage}/>
+          <AppStack.Screen name="CustApp" component={CusApp}/>
       </AppStack.Navigator> 
     </NavigationContainer>
   );

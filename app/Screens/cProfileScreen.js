@@ -25,6 +25,7 @@ const cProfileScreen=({navigation,route})=>{
     const {id}=route.params.uId;
     console.log('Profile',id)
     
+    
 
     const profile= async() => {
         console.log("x")
@@ -66,7 +67,7 @@ const cProfileScreen=({navigation,route})=>{
                 <Text style={styles.telephonetxt}   >Telephone  : {telephone}</Text>
                 <Text style={styles.addresstxt}     >Address      : {address}</Text>
                 <Text style={styles.gendertxt}      >Gender        : {gender}</Text>
-                <Text style={styles.dobtxt}         >Birth Date   :</Text>
+                {/* <Text style={styles.dobtxt}         >Birth Date   :</Text> */}
 
                 <TouchableOpacity style={styles.editbtn}
                 onPress={() =>navigation.navigate("CeditProfile",{id})}>

@@ -21,9 +21,11 @@ const CategoryScreen=({navigation})=>{
           </Text>
           
           <TouchableOpacity style={styles.button}
+          
             onPress={() => navigation.navigate ("ServiceScreen")}>
               <Text style={styles.btnTxt}>
-                  Category 1</Text>
+              Hair</Text>
+              
           </TouchableOpacity>
         
           <TouchableOpacity style={styles.backbutton}

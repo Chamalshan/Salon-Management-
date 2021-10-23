@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{ useContext, useState,useEffect } from 'react';
 import { TouchableOpacityBase } from 'react-native';
+import { firebase } from '../navigation/firebase';
 //import MapView from 'react-native-maps';
 import { 
   StyleSheet, 
@@ -11,28 +12,66 @@ import {
   View,
   Dimensions 
 } from 'react-native';
-  import pic from './assets/Hair_Salon_Stations.jpg'; 
-  import pic2 from './assets/maps.jpg';
-  import pic3 from './assets/salon.jpg';
-  import pic4 from './assets/salon2.jpg';
-  import pic5 from './assets/salon3.jpg';
+  import pic from '../assets/Hair_Salon_Stations.jpg'; 
+  import pic2 from '../assets/maps.jpg';
+  import pic3 from '../assets/salon.jpg';
+  import pic4 from '../assets/salon2.jpg';
+  import pic5 from '../assets/salon3.jpg';
 
-export default function App() {
+const App = ({navigation,route}) =>{
   const [city, setcity] = useState('')
   const [selectedValue, setSelectedValue] = useState("Gender");
+  const [userData, setUserData] = useState(null);
+  const [name, setname]= useState();
+  const [mobileno, setmobileno ] = useState();
+  const [location, setlocation] = useState();
+  const [website, setwebsite] = useState();
+  const [regno, setregno] = useState();
+  console.log(navigation)
+  // const {id}=route.params;
+  // console.log('Profile',id)
+  
+
+  const profile= async() => {
+      console.log("x")
+      const currentuser = await 
+          firebase
+          .firestore()
+          .collection('shop')
+          .doc('01mQwu24TLTW9zXNgqyTokVk69r2')
+          .get()
+          .then((documentSnapshot) => {
+              // console.log(documentSnapshot);
+          console.log('User data 11: ', documentSnapshot.data().name);
+          setUserData(documentSnapshot.data().name);
+          setname(documentSnapshot.data().name);
+          setmobileno(documentSnapshot.data().mobileno);
+          setlocation(documentSnapshot.data().location);
+          setwebsite(documentSnapshot.data().website);
+          setregno(documentSnapshot.data().regno);
+          })
+          .catch(error => {
+              console.log(error);
+            })
+  }
+  useEffect(() =>{
+      profile();
+  }, []);
   return (
-    <ImageBackground style={styles.container} source={require("./assets/bg-01.png")}>
-      <Text style={styles.header}>Salon Name</Text>
+    <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
+      <Text style={styles.header}>{name}</Text>
       <Image source={pic} style={styles.pict} /> 
-      <Text style={styles.Location}>Location: </Text>
-      <Text style={styles.Telephone}>Telephone: </Text>
-      <Text style={styles.Owner}>Owner: </Text>
-      <Text style={styles.Employees}>Number of Employees: </Text>
+      <Text style={styles.Location}>Location : {location} </Text>
+      <Text style={styles.Telephone}>Telephone : {mobileno} </Text>
+      <Text style={styles.Owner}>Website : {website}  </Text>
+      <Text style={styles.Employees}>Register No : {regno} </Text>
       <Image source={pic2} style={styles.pictu} />
       <Image source={pic3} style={styles.pictu1} />
       <Image source={pic4} style={styles.pictu2} />
       <Image source={pic5} style={styles.pictu3} />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+        onPress={() => navigation.navigate ("CustApp")}
+      >
         <Text style={styles.btnTxt}>Choose Salon</Text>
       </TouchableOpacity >
       {/* <View style={styles.mapp}>
@@ -40,8 +79,10 @@ export default function App() {
       </View> */}
       <StatusBar style="auto" />
       </ImageBackground>
-  );
-}
+);
+    }
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
@@ -65,33 +106,32 @@ const styles = StyleSheet.create({
     //fontWeight:'bold',
     fontSize:20,
     top:'5%',
+    left:'-3%',
     color:"#3A292A",
     position:"relative",
-    paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
     paddingLeft: 10,
-    left:-144
   },
   Telephone:{
     fontFamily:'Roboto',
     //fontWeight:'bold',
     fontSize:20,
     top:'5%',
+    left:'-3%',
     color:"#3A292A",
     position:"relative",
     paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
     paddingLeft: 10,
-    left:-138
   },
   Owner:{
     fontFamily:'Roboto',
     //fontWeight:'bold',
     fontSize:20,
     top:'5%',
+    left:'-3%',
     color:"#3A292A",
     position:"relative",
     paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
     paddingLeft: 10,
-    left:-155
   },
   Employees:{
     fontFamily:'Roboto',
@@ -102,7 +142,7 @@ const styles = StyleSheet.create({
     position:"relative",
     paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
     paddingLeft: 10,
-    left:-83
+    left:'-3%',
   },
   
 

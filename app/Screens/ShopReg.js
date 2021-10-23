@@ -57,7 +57,9 @@ const ShopReg=({navigation})=>{
                    .doc(uid)
                    .set(data)
                    .then(() => {
-                       navigation.navigate('Dashboard', {user: data})
+                    let uId= {id:uid};
+                    navigation.navigate('Dashboard',{screen:'Profile',params:{uId}})||navigation.navigate('Dashboard',{screen:'Home',params:{uId}});
+                    console.log('logedin as customer',uId);
                    })
                  })
  }

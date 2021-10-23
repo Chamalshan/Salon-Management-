@@ -33,7 +33,7 @@ export default function CustReg({ navigation,route }) {
   const [address, setaddress] = useState("");
   const [confirmPassword, setcofirmPassword] = useState("");
   const [image, setImage] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("Gender");
+  const [selectedValue, setSelectedValue] = useState("Gender")
   const [state, setState] = useState("");
   const [userData, setUserData] = useState(null);
   const [getfirstname, setgetfirstname] = useState();
@@ -111,8 +111,8 @@ const onUpdatePress = () => {
         .doc(id)
         .update(data)
         .then((firestoreDocument) => {
-            let uId= {id:firestoreDocument.id};
-            navigation.navigate('Profile',{screen:'Profile',params:{uId}});
+            let uId= {id:id};
+            navigation.navigate('Login');
         })
 };
   const PickImage = async () => {

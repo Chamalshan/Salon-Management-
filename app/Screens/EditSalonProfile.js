@@ -116,10 +116,11 @@ const onUpdatePress = () => {
         usersRef
         .doc(id)
         .update(data)
-        .then((firestoreDocument) => {
-            let uId= {id:firestoreDocument.id};
-            navigation.navigate('Profile',{screen:'Profile',params:{uId}});
+        .then(() => {
+          let uId= {id:id};
+          navigation.navigate('Login');
         })
+        
 };
   const PickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

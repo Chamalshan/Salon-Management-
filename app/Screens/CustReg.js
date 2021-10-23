@@ -78,9 +78,12 @@ export default function CustReg({navigation}) {
                 usersRef
                     .doc(uid)
                     .set(data)
-                    .then(() => {
-                        navigation.navigate('CDashboard', {user: data})
-                    })
+                    .then( ()=> {
+                        let uId= {id:uid};
+                        navigation.navigate('CDashboard',{screen:'Profile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
+                        console.log('logedin as customer',uId);
+                        }
+                    )
                   })
   }
 
