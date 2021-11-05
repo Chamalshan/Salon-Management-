@@ -66,7 +66,7 @@ const cProfileScreen=({navigation,route})=>{
                 <Text style={styles.dobtxt}         >Register No   : {regno}</Text>
 
                 <TouchableOpacity style={styles.editbtn}
-                onPress={() =>navigation.navigate("EditSalonProfile",{id})}>
+                onPress={() =>navigation.navigate("Salonedit2",{id})}>
                     <Text style={styles.editbtnTxt}>
                      Edit Profile
                     </Text>

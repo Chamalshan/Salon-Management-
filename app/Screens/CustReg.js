@@ -36,6 +36,9 @@ export default function CustReg({navigation}) {
   const [image,setImage]= useState(null);
   const [selectedValue, setSelectedValue] = useState("Gender");
   const [state, setState] = useState('')
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
 
   // useEffect( async () => {
   //   if (Platform.OS !== 'web') {
@@ -130,6 +133,27 @@ export default function CustReg({navigation}) {
       }
     }
 
+
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    // setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
     return (
       <KeyboardAvoidingWrapper>
 
@@ -198,10 +222,36 @@ export default function CustReg({navigation}) {
         </Picker>
         
         
-        <TextInput style={styles.textinput4} 
+      {/* <View>
+      <View>
+        <Button onPress={showDatepicker} title="Show date picker!" />
+      </View>
+      <View>
+        <Button onPress={showTimepicker} title="Show time picker!" />
+      </View>
+        </View> */}
+      <TouchableOpacity style={styles.textinput4}
+        onPress={showDatepicker}
+      >
+        <View>
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            placeholderText="Birth Day"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+          />
+        )}
+        </View>
+      </TouchableOpacity>
+
+        {/* <TextInput style={styles.textinput4} 
         placeholder="Birthday" 
         underlineColorAndroid={'transparent'}
-        />
+        /> */}
         
         <TextInput style={styles.textinput5} 
         value={state.mobileno}

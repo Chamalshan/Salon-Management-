@@ -22,6 +22,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import KeyboardAvoidingWrapper from "../Components/KeyboardAvoidingWrapper";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
+// import firestore from '@react-native-firebase/firestore';
+// import storage from '@react-native-firebase/storage';
 
 export default function CustReg({ navigation,route }) {
   const [name, setName] = useState('')
@@ -64,6 +66,13 @@ export default function CustReg({ navigation,route }) {
   console.log(navigation);
   const  id  = route.params.id;
   console.log("Edit Profile", id);
+
+  
+    // let imgUrl = await uploadImage();
+
+    // if( imgUrl == null && userData.userImg ) {
+    //   imgUrl = userData.userImg;
+    // }
 
   const profile = async () => {
       const currentuser = await firebase
@@ -126,7 +135,7 @@ const onUpdatePress = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       quality: 1,
     });
     console.log(result);
@@ -134,6 +143,9 @@ const onUpdatePress = () => {
       setImage(result.uri);
     }
   };
+
+  
+
 
   const formatNumber = (phoneNumberString) => {
     let newText = "";
@@ -186,7 +198,7 @@ const onUpdatePress = () => {
         {/* <Image
           style={{width:105, height:111, top:'2%'}}
           source={require('../assets/pic.png')}/> */}
-        <Button title="Choose Image" onPress={PickImage} />
+        {/* <Button title="Choose Image" onPress={PickImage} />
         {image && (
           <Image
             source={{ uri: image }}
@@ -195,7 +207,51 @@ const onUpdatePress = () => {
               height: 200,
             }}
           />
-        )}
+        )} */}
+
+<TouchableOpacity onPress={() => {PickImage()}}>
+            <View
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <ImageBackground
+                source={{
+                  uri: image
+                    ? image
+                    : userData
+                    ? userData.userImg ||
+                      'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
+                    : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                }}
+                style={{height: 100, width: 100}}
+                imageStyle={{borderRadius: 15}}>
+                {/* <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <MaterialCommunityIcons
+                    name="camera"
+                    size={35}
+                    color="#fff"
+                    style={{
+                      opacity: 0.7,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderWidth: 1,
+                      borderColor: '#fff',
+                      borderRadius: 10,
+                    }}
+                  />
+                </View> */}
+              </ImageBackground>
+            </View>
+          </TouchableOpacity>
 
 <TextInput style={styles.textinput} 
           placeholder={getname}
@@ -474,8 +530,8 @@ const styles = StyleSheet.create({
     shadowRadius: 100,
     marginVertical: 10,
     marginHorizontal: 10,
-    position: "absolute",
-    top: "86.5%",
+    position: "relative",
+    // top: "86.5%",
     //left:'40%',
   },
 });

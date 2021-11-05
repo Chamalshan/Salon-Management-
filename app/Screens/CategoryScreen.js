@@ -11,7 +11,10 @@ import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-const CategoryScreen=({navigation})=>{
+const CategoryScreen=({navigation,route})=>{
+  const {id}=route.params.uId;
+  console.log(navigation)
+  console.log('Category',id)
     return (
       <KeyboardAvoidingWrapper>
       <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>

@@ -39,7 +39,7 @@ const Form = ({navigation})=>{
               console.log('logedin as customer',uId);
               }else{
                 let uId= {id:firestoreDocument.id};
-              navigation.navigate('CDashboard',{screen:'Profile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
+              navigation.navigate('CDashboard',{screen:'Profile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Category',params:{uId}})||navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
               console.log('logedin as customer',uId);
             }
         })

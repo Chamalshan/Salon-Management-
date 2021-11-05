@@ -30,6 +30,7 @@ import ChooseSalon from './app/Screens/ChooseSalon';
 import CeditProfile from './app/Screens/ceditProfile';
 import SalonPage from './app/Screens/SalonPage';
 import CusApp from './app/Screens/CustApp'
+import SalonEdit2 from './app/Screens/SalonEdit2';
 import * as firebase from "firebase";
 
 const AppStack= createStackNavigator();
@@ -62,6 +63,7 @@ const App=()=>{
           <AppStack.Screen name="CeditProfile" component={CeditProfile}/>
           <AppStack.Screen name="Salon" component={SalonPage}/>
           <AppStack.Screen name="CustApp" component={CusApp}/>
+          <AppStack.Screen name="Salonedit2" component={SalonEdit2}/>
       </AppStack.Navigator> 
     </NavigationContainer>
   );
