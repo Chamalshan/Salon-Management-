@@ -25,7 +25,7 @@ const CategoryScreen=({navigation,route})=>{
           
           <TouchableOpacity style={styles.button}
           
-            onPress={() => navigation.navigate ("ServiceScreen")}>
+            onPress={() => navigation.navigate ("ServiceScreen",{id})}>
               <Text style={styles.btnTxt}>
               Hair</Text>
               

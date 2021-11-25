@@ -2,7 +2,29 @@ import React from 'react'
 import { StyleSheet, Text, View,ImageBackground,TouchableOpacity ,Image} from 'react-native';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 
-const AppointmentScreen = ({navigation}) => {
+const AppointmentScreen = ({navigation,route}) => {
+    const id=route.params.uId;
+    console.log('Appointment',id);
+
+    const pendapp =()=>{
+        let uId=id;
+        navigation.navigate('PendingAppointment',{uId});
+    }
+
+    const getAppointment = async() => {
+        const currentUser = await firebase 
+        .firestore()
+        .collection('Appointment')
+        .doc()
+        .get()
+        .then((documentSnapshot) => {
+          if( documentSnapshot.exists ) {
+            console.log('User Data', documentSnapshot.data());
+            setUserData(documentSnapshot.data());
+          }
+        })
+    }
+ 
     return (
         <KeyboardAvoidingWrapper>
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
@@ -18,7 +40,7 @@ const AppointmentScreen = ({navigation}) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.pendingCont}
-                        onPress={() => navigation.navigate('PendingAppointment')}
+                        onPress={() => pendapp()}
                     >
                         <View style={styles.pendingbox}>
                             <Text style={styles.pendingtxt}>Pending</Text>
@@ -55,7 +77,7 @@ const AppointmentScreen = ({navigation}) => {
     )
 }
 
-export default AppointmentScreen
+export default AppointmentScreen;
 
 const styles = StyleSheet.create({
     container: {

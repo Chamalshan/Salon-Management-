@@ -35,7 +35,7 @@ const Form = ({navigation})=>{
             console.log('User data 222: ', firestoreDocument.data());
             if (!firestoreDocument.exists) {
               let uId= {id:firestoreDocument.id};
-              navigation.navigate('Dashboard',{screen:'Profile',params:{uId}})||navigation.navigate('Dashboard',{screen:'Home',params:{uId}});
+              navigation.navigate('Dashboard',{screen:'Home',params:{uId}})||('Dashboard',{screen:'Appointment',params:{uId}})||navigation.navigate('Dashboard',{screen:'Profile',params:{uId}});
               console.log('logedin as customer',uId);
               }else{
                 let uId= {id:firestoreDocument.id};

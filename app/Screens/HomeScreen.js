@@ -43,7 +43,10 @@ const HomeScreen=({navigation,route})=>{
         profile();
     }, []);
 
-    
+    const appnavi=()=>{
+        let uId= id;
+        navigation.navigate('Appointment',{uId})
+    }
     return (
             <KeyboardAvoidingWrapper>
                 <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
@@ -51,7 +54,7 @@ const HomeScreen=({navigation,route})=>{
                     <Text style={styles.hellotext1}>Hello {name}!</Text>    
     
                     <TouchableOpacity style={styles.appointmentCont}
-                        onPress={() => navigation.navigate('Appointment')}
+                        onPress={() =>appnavi()}
                     >
                         <View style={styles.appointmentbox}>
                             <Text style={styles.appointmenttxt}>Appointments</Text>

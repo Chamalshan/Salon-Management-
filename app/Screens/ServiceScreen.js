@@ -7,7 +7,10 @@ import {
   ImageBackground 
 } from 'react-native';
 
-const ServiceScreen=({navigation})=>{
+const ServiceScreen=({navigation,route})=>{
+  const  id  = route.params.id;
+    console.log("Service", id);
+  
     return (
       <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
         <View style={styles.signupTextCont}>
@@ -15,7 +18,7 @@ const ServiceScreen=({navigation})=>{
             Category 1
           </Text>
           <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate ("Salon")}>
+            onPress={() => navigation.navigate ("Salon",{id})}>
               <Text style={styles.btnTxt}>
               Hair Straightening</Text>
           </TouchableOpacity>

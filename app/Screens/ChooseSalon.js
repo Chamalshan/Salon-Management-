@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   View } from 'react-native';
 
-export default function App() {
+export default function App(navif=Geolocation,route) {
+  const  id  = route.params.id;
+  console.log("Edit Profile", id);
   const [city, setcity] = useState('')
   const [selectedValue, setSelectedValue] = useState("Gender");
   return (

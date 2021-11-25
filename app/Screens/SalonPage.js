@@ -19,6 +19,8 @@ import {
   import pic5 from '../assets/salon3.jpg';
 
 const App = ({navigation,route}) =>{
+  const  id  = route.params.id;
+  console.log("Salon Page", id);
   const [city, setcity] = useState('')
   const [selectedValue, setSelectedValue] = useState("Gender");
   const [userData, setUserData] = useState(null);
@@ -27,7 +29,7 @@ const App = ({navigation,route}) =>{
   const [location, setlocation] = useState();
   const [website, setwebsite] = useState();
   const [regno, setregno] = useState();
-  console.log(navigation)
+  
   // const {id}=route.params;
   // console.log('Profile',id)
   
@@ -57,6 +59,12 @@ const App = ({navigation,route}) =>{
   useEffect(() =>{
       profile();
   }, []);
+  const addapp= ()=>{
+
+    let sid= {said:"01mQwu24TLTW9zXNgqyTokVk69r2"};
+    navigation.navigate('CustApp',{sid,id});
+    
+  }
   return (
     <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
       <Text style={styles.header}>{name}</Text>
@@ -70,7 +78,7 @@ const App = ({navigation,route}) =>{
       <Image source={pic4} style={styles.pictu2} />
       <Image source={pic5} style={styles.pictu3} />
       <TouchableOpacity style={styles.button}
-        onPress={() => navigation.navigate ("CustApp")}
+        onPress={() => (addapp())}
       >
         <Text style={styles.btnTxt}>Choose Salon</Text>
       </TouchableOpacity >

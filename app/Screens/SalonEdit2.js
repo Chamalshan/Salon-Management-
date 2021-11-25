@@ -69,130 +69,98 @@ const SalonEdit2 = ({route,navigation}) => {
         })
         .then(() => {
           console.log('User Updated!');
-          alert(
-            'Profile Updated!',
-            'Your profile has been updated successfully.'
-          );
-        })
+          // alert(
+          //   'Profile Updated!',
+          //   'Your profile has been updated successfully.'
+          // );
+              let uId= id;
+              navigation.navigate('Dashboard',{screen:'Profile',params:{uId}});
+              console.log('logedin as customer',uId);
+            }
+          )
       }
-
-    // const uploadImage = async () => {
-    //     if( image == null ) {
-    //       return null;
-    //     }
-        
-    //     const uploadUri = image;
-    //     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-        
-    //     // Add timestamp to File Name
-    //     const extension = filename.split('.').pop();
-    //     console.log(extension); 
-    //     const name = filename.split('.').slice(0, -1).join('.');
-    //     console.log(name); 
-    //     filename = name + Date.now() + '.' + extension;
-    //     console.log(filename);
-    //     setUploading(true);
-    //     setTransferred(0);
-    
-    //     const storageRef = firebase.storage().ref(`photos/${filename}`);
-    //     const task = storageRef.put(uploadUri);
-        
-    
-    //     // Set transferred state
-    //     task.on('state_changed', (taskSnapshot) => {
-    //       console.log(
-    //         `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-    //       );
-    
-    //       setTransferred(
-    //         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
-    //       );
-    //     });
-    
-    //     try {
-    //       await task;
-    
-    //       const url = await storageRef.getDownloadURL();
-    
-    //       setUploading(false);
-    //       setImage(null);
-    
-    //       // Alert.alert(
-    //       //   'Image uploaded!',
-    //       //   'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
-    //       // );
-    //       return url;
-    
-    //     } catch (e) {
-    //       console.log(e);
-    //       return null;
-    //     }
-    
-    //   };
-    
-
-
-    useEffect(() => {
-        getUser();
-    }, []);
-    
-    // const PickImage = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //       mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //       allowsEditing: true,
-    //       aspect: [4, 4],
-    //       quality: 1,
-    //     });
-    //     console.log(result);
-    //     if (!result.cancelled) {
-    //       setImage(result.uri);
-    //     }
-    //   };
-
-      // const PickImage = async () => {
-      //   ImagePicker.launchImageLibraryAsync({
-      //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-      //     width: 300,
-      //     height: 300,
-      //     base64:true,
-      //     allowsEditing: true,
-          
-      //   //   compressImageQuality: 0.7,
-      //   }).then((image) => {
-      //     console.log(image);
-      //     const imageUri = Platform.OS==='ios'?image.sourceURL:image.uri;
-      //     setImage(imageUri);
-      //   //   this.bs.current.snapTo(1);
-      //   });
-      // };
 
       const PickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync();
-
-        if(!result.cancelled) {
-          uploadImage(result.uri)
-          .then(() =>{
-            Alert.alert("Success");
-          }).catch((error) => {
-            Alert.alert(error);
-          })
-        }
+        let result = await ImagePicker.launchImageLibraryAsync()
+        .then((image) => {
+              console.log(image);
+              const imageUri = image.uri;
+              setImage(imageUri);
+            //   this.bs.current.snapTo(1);
+            });
+        // if(!result.cancelled) {
+        //   uploadImage(result.uri)
+        //   .then((image) =>{
+        //     Alert.alert("Success");
+        //     console.log(image);
+        //     const imageUri = image.uri;
+        //     setImage(imageUri);
+        //   }).catch((error) => {
+        //     Alert.alert(error);
+        //   })
+        // }        
       }
-
-        const uploadImage = async (uri) => {
-        
+      
+      const uploadImage = async () => {
+          if( image == null ) {
+                  return null;
+                }
+        const uri= image;
         const response = await fetch(uri);
         let filename = uri.substring(uri.lastIndexOf('/') + 1);
         const blob = await response.blob();
 
+        setUploading(true);
+        setTransferred(0);
+
         var ref = firebase.storage().ref().child("images/"+filename);
-        return ref.put(blob);
+        const task= ref.put(blob);
+
+        // Set transferred state
+        task.on('state_changed', (taskSnapshot) => {
+          console.log(
+            `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+          );
+    
+          setTransferred(
+            Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
+          );
+        });
+    
+        try {
+                await task;
+          
+                const url = await ref.getDownloadURL();
+                console.log(url);
+          
+                setUploading(false);
+                setImage(null);
+          
+                // Alert.alert(
+                //   'Image uploaded!',
+                //   'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
+                // );
+                return url;
+          
+              } catch (e) {
+                console.log(e);
+                return null;
+              }
+
       }
       // const url =  getDownloadURL();
       // console.log(url)
 
-
+      useEffect(() => {
+        getUser();
+    }, []);
     //   bs = React.createRef();
+
+    const onbackPress = () =>{
+      
+      let uId= id;
+      navigation.navigate('Dashboard',{screen:'Profile',params:{uId}})
+    }
 
     return (
         <KeyboardAvoidingWrapper>
@@ -202,7 +170,7 @@ const SalonEdit2 = ({route,navigation}) => {
                 
             <TouchableOpacity
                 style={styles.backbutton}
-                onPress={() => navigation.navigate("Profile")}
+                onPress={() => {onbackPress()}}
             >
             <Image
                 style={{ width: 28, height: 28 }}

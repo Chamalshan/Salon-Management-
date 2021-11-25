@@ -21,6 +21,7 @@ const cProfileScreen=({navigation,route})=>{
     const [regno, setregno] = useState();
     console.log(navigation)
     const {id}=route.params.uId;
+    
     console.log('Profile',id)
     
 
@@ -46,6 +47,9 @@ const cProfileScreen=({navigation,route})=>{
                 console.log(error);
               })
     }
+
+    
+    
     useEffect(() =>{
         profile();
     }, []);

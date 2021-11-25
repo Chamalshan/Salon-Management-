@@ -1,5 +1,4 @@
-import { useContext, useState,useEffect } from 'expo-status-bar';
-import React from 'react';
+import React, { useContext, useState, useEffect } from "react";
 import { 
   StyleSheet, 
   Text, 
@@ -11,22 +10,57 @@ import {
   TextInput,
   StatusBar 
 } from 'react-native';
+import { firebase } from '../navigation/firebase';
 
-export default function App(navigation) {
+const App=({navigation,route})=> {
+
+  const  said  = route.params.sid;
+  console.log("custapp", said);
+  const  id  = route.params.id;
+  console.log("custappcus", id);
+  const [userData, setUserData] = useState(null);
+  const [sid, setsid] = useState(said);
+  const [cid, setcid] = useState(id)
+
+
+  const sendData=()=>{
+    firebase
+        .firestore()
+        .collection('appointment')
+        .doc()
+        .set({
+          cid,
+          time:userData.time,
+          date:userData.date,
+          sid,
+          // service:userData.service,
+        })
+        .then(() => {
+          console.log('Done');
+          
+              // let uId= id;
+              // navigation.navigate('Dashboard',{screen:'Profile',params:{uId}});
+              // console.log('logedin as customer',uId);
+            }
+          )
+      }
+  
   return (
     <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
     <View><TextInput style={styles.textinput} 
         placeholder="Date"
-        autoCapitalize="none"
         autoCorrect={false}
+        value={userData ? userData.oname : ''}
+        onChangeText={(txt) => setUserData({...userData, date: txt})}
         />
         <TextInput style={styles.textinput} 
         placeholder="Time"
-        autoCapitalize="none"
         autoCorrect={false}
+        value={userData ? userData.oname : ''}
+        onChangeText={(txt) => setUserData({...userData, time: txt})}
         />
         <TouchableOpacity style={styles.button}
-        onPress={() =>alert('Appointment Added')}>
+        onPress={() =>{sendData()}}>
             <Text style={styles.btnTxt}>
                 Add Appointment
             </Text>
@@ -36,7 +70,7 @@ export default function App(navigation) {
         </ImageBackground>
   );
 }
-
+export default App;
 
 
 const styles = StyleSheet.create({
