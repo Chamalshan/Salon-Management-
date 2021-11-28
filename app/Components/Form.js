@@ -35,11 +35,11 @@ const Form = ({navigation})=>{
             console.log('User data 222: ', firestoreDocument.data());
             if (!firestoreDocument.exists) {
               let uId= {id:firestoreDocument.id};
-              navigation.navigate('Dashboard',{screen:'Home',params:{uId}})||('Dashboard',{screen:'Appointment',params:{uId}})||navigation.navigate('Dashboard',{screen:'Profile',params:{uId}});
-              console.log('logedin as customer',uId);
+              navigation.navigate('Dashboard',{screen:'Profile',params:{uId}})||navigation.navigate('Dashboard',{screen:'Appointment',params:{uId}})||navigation.navigate('Dashboard',{screen:'Home',params:{uId}});
+              console.log('logedin as merchant',uId);
               }else{
                 let uId= {id:firestoreDocument.id};
-              navigation.navigate('CDashboard',{screen:'Profile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Category',params:{uId}})||navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
+              navigation.navigate('CDashboard',{screen:'cProfile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Category',params:{uId}})||navigation.navigate('CDashboard',{screen:'cHome',params:{uId}});
               console.log('logedin as customer',uId);
             }
         })

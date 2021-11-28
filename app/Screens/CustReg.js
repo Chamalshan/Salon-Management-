@@ -22,46 +22,40 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
+import { Feather } from '@expo/vector-icons';
 
 
 export default function CustReg({navigation}) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [firstname, setfirstname] = useState('')
-  const [lastname, setlastname]  = useState('')
-  const [gender, setgender] = useState('')
-  const [mobileno, setmobile] = useState('')
-  const [address, setaddress] = useState('')
-  const [confirmPassword, setcofirmPassword] = useState('')
-  const [image,setImage]= useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstname, setfirstname] = useState('');
+  const [lastname, setlastname]  = useState('');
+  const [gender, setgender] = useState('');
+  const [mobileno, setmobile] = useState('');
+  const [address, setaddress] = useState('');
+  const [confirmPassword, setcofirmPassword] = useState('');
   const [selectedValue, setSelectedValue] = useState("Gender");
-  const [state, setState] = useState('')
+  const [state, setState] = useState('');
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-
-  // useEffect( async () => {
-  //   if (Platform.OS !== 'web') {
-  //     const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       alert('Permission denied!')
-  //     }
-  //   }
-  // },[])
-
-  // state={gender:""};
-  // showgender=(option) =>{
-  //   alert(option);
-  //   this.setState({gender: option});
-  // }
-
+  const [image, setImage] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [transferred, setTransferred] = useState(0);
+    const [userData, setUserData] = useState(null);
   
 
-  const onRegisterPress = () => {
-     if (password !== confirmPassword) {
-         alert("Passwords don't match.")
-         return
-     }
+  const onRegisterPress = async() => {
+    
+    let imgUrl = await uploadImage();
+    
+    if( imgUrl == null && userData.userImg ) {
+      imgUrl = userData.userImg;
+    }
+    if (password !== confirmPassword) {
+        alert("Passwords don't match.")
+        return
+    }
     firebase
         .auth()
         .createUserWithEmailAndPassword(email,password)
@@ -76,32 +70,91 @@ export default function CustReg({navigation}) {
                     mobileno,
                     address,
                     password,
+                    userImg: imgUrl,
                 };
                 const usersRef = firebase.firestore().collection('users')
-                usersRef
                     .doc(uid)
-                    .set(data)
-                    .then( ()=> {
-                        let uId= {id:uid};
-                        navigation.navigate('CDashboard',{screen:'Profile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Home',params:{uId}});
+                    .get()
+                    .then((firestoreDocument)=> {
+                      console.log('User data register: ', firestoreDocument.data());
+                      if (!firestoreDocument.exists) {
+                          let uId= {id:firestoreDocument.id};
+                        navigation.navigate('CDashboard',{screen:'cProfile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Category',params:{uId}})||navigation.navigate('CDashboard',{screen:'cHome',params:{uId}});
                         console.log('logedin as customer',uId);
-                        }
-                    )
+                      }
+                  })
                   })
   }
 
-    const PickImage = async() =>{
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing:true,
-        aspect:[4,3],
-        quality:1
-      })
-      console.log(result)
-      if (!result.cancelled) {
-        setImage(result.uri)
-      }
-    }
+
+  const PickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync()
+    .then((image) => {
+          console.log(image);
+          const imageUri = image.uri;
+          setImage(imageUri);
+        //   this.bs.current.snapTo(1);
+        });
+    // if(!result.cancelled) {
+    //   uploadImage(result.uri)
+    //   .then((image) =>{
+    //     Alert.alert("Success");
+    //     console.log(image);
+    //     const imageUri = image.uri;
+    //     setImage(imageUri);
+    //   }).catch((error) => {
+    //     Alert.alert(error);
+    //   })
+    // }        
+  }
+  
+  const uploadImage = async () => {
+      if( image == null ) {
+              return null;
+            }
+    const uri= image;
+    const response = await fetch(uri);
+    let filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const blob = await response.blob();
+
+    setUploading(true);
+    setTransferred(0);
+
+    var ref = firebase.storage().ref().child("images/"+filename);
+    const task= ref.put(blob);
+
+    // Set transferred state
+    task.on('state_changed', (taskSnapshot) => {
+      console.log(
+        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+      );
+
+      setTransferred(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
+      );
+    });
+
+    try {
+            await task;
+      
+            const url = await ref.getDownloadURL();
+            console.log(url);
+      
+            setUploading(false);
+            setImage(null);
+      
+            // Alert.alert(
+            //   'Image uploaded!',
+            //   'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
+            // );
+            return url;
+      
+          } catch (e) {
+            console.log(e);
+            return null;
+          }
+
+  }
 
     const formatNumber=(phoneNumberString)=>{
       let newText='';
@@ -172,11 +225,50 @@ export default function CustReg({navigation}) {
         {/* <Image
           style={{width:105, height:111, top:'2%'}}
           source={require('../assets/pic.png')}/> */}
-        <Button title ="Choose Image" onPress={PickImage} />
-        {image && <Image source={{uri:image}} style={{
-          width:200,
-          height:200
-        }}/>}
+                    <TouchableOpacity onPress={() => {PickImage()}}>
+            <View
+              style={{
+                height: 75,
+                width: 75,
+                borderColor:'#3A292A',
+                borderRadius: 25,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <ImageBackground
+                source={{
+                  uri: image
+                    ? image
+                    : userData
+                    ? userData.userImg ||
+                      'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
+                    : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                }}
+                style={{height: 75, width: 75}}
+                imageStyle={{borderRadius: 50}}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    <Feather 
+                        name="camera" 
+                        size={24} 
+                        color="#fff"
+                        style={{
+                        opacity: 0.7,
+                        alignItems: 'center',
+                         justifyContent: 'center',
+                         borderWidth: 1,
+                        borderColor: '#fff',
+                        borderRadius: 10,
+                        }} 
+                    />
+                </View>
+                </ImageBackground>
+            </View>
+            </TouchableOpacity>
 
         <TextInput style={styles.textinput1} 
         placeholder="First Name" 
@@ -233,6 +325,7 @@ export default function CustReg({navigation}) {
       <TouchableOpacity style={styles.textinput4}
         onPress={showDatepicker}
       >
+          </TouchableOpacity>
         <View>
         {show && (
           <DateTimePicker
@@ -246,7 +339,6 @@ export default function CustReg({navigation}) {
           />
         )}
         </View>
-      </TouchableOpacity>
 
         {/* <TextInput style={styles.textinput4} 
         placeholder="Birthday" 

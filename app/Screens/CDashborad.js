@@ -44,7 +44,7 @@ const CDashboard=({navigation,route})=>{
             
           }}
         >
-        <Tab.Screen name="Home" component={HomeScreen} 
+        <Tab.Screen name="cHome" component={HomeScreen} 
         options={{
             tabBarIcon: ({ focused }) => (
                 <View style={{
@@ -92,7 +92,7 @@ const CDashboard=({navigation,route})=>{
             ),
         }} />   
 
-        <Tab.Screen name="Appointment" component={AppointmentScreen}
+        <Tab.Screen name="cAppointment" component={AppointmentScreen}
          options={{
             tabBarIcon: ({ focused }) => (
                 <View style={{
@@ -116,7 +116,7 @@ const CDashboard=({navigation,route})=>{
             ),
         }}
         />
-        <Tab.Screen name="Profile" component={ProfileScreen}
+        <Tab.Screen name="cProfile" component={ProfileScreen}
 
          options={{
             tabBarIcon: ({ focused }) => (

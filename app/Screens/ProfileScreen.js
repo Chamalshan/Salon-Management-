@@ -11,7 +11,7 @@ import { Text,
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { firebase } from '../navigation/firebase';
 
-const cProfileScreen=({navigation,route})=>{
+const ProfileScreen=({navigation,route})=>{
 
     const [userData, setUserData] = useState(null);
     const [name, setname]= useState();
@@ -88,7 +88,7 @@ const cProfileScreen=({navigation,route})=>{
     );
 }
 
-export default cProfileScreen;
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
     container: {

@@ -18,7 +18,7 @@ const ServiceScreen=({navigation,route})=>{
             Category 1
           </Text>
           <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate ("Salon",{id})}>
+            onPress={() => navigation.navigate ("Salonlist",{id})}>
               <Text style={styles.btnTxt}>
               Hair Straightening</Text>
           </TouchableOpacity>

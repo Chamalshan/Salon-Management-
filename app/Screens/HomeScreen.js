@@ -47,6 +47,12 @@ const HomeScreen=({navigation,route})=>{
         let uId= id;
         navigation.navigate('Appointment',{uId})
     }
+
+    const appnaviadds=()=>{
+        let uId= id;
+        navigation.navigate('Advertisments',{uId})
+    }
+
     return (
             <KeyboardAvoidingWrapper>
                 <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
@@ -62,7 +68,7 @@ const HomeScreen=({navigation,route})=>{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.advertismentCont}
-                        onPress={() => navigation.navigate('Advertisments')}
+                        onPress={() => appnaviadds()}
                     >
                         <View style={styles.advertismentbox}>
                             <Text style={styles.advertismenttxt}>Advertisments</Text>

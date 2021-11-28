@@ -21,6 +21,8 @@ import {
 const App = ({navigation,route}) =>{
   const  id  = route.params.id;
   console.log("Salon Page", id);
+  const sid=route.params.sid;
+  console.log("Sid", sid);
   const [city, setcity] = useState('')
   const [selectedValue, setSelectedValue] = useState("Gender");
   const [userData, setUserData] = useState(null);
