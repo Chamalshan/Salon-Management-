@@ -22,27 +22,14 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import KeyboardAvoidingWrapper from "../Components/KeyboardAvoidingWrapper";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
+import { Feather } from '@expo/vector-icons';
 
 export default function CustReg({ navigation,route }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstname, setfirstname] = useState("");
-  const [lastname, setlastname] = useState("");
-  const [gender, setgender] = useState("");
-  const [mobileno, setmobile] = useState("");
-  const [address, setaddress] = useState("");
-  const [confirmPassword, setcofirmPassword] = useState("");
   const [image, setImage] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("Gender")
-  const [state, setState] = useState("");
-  const [userData, setUserData] = useState(null);
-  const [getfirstname, setgetfirstname] = useState();
-  const [getlastname, setgetlastname] = useState();
-  const [gettelephone, setgettelephone] = useState();
-  const [getaddress, setgetaddress] = useState();
-  const [getgender, setgetgender] = useState();
-  const [getemail, setgetemail]=useState();
-  const [getdob, setgetdob] = useState();
+    const [uploading, setUploading] = useState(false);
+    const [transferred, setTransferred] = useState(0);
+    const [userData, setUserData] = useState(null);
+    const [selectedValue,setSelectedValue] = useState();
 
   // useEffect( async () => {
   //   if (Platform.OS !== 'web') {
@@ -63,70 +50,121 @@ export default function CustReg({ navigation,route }) {
   const  id  = route.params.id;
   console.log("Edit Profile", id);
 
-  const profile = async () => {
-      const currentuser = await firebase
-        .firestore()
-        .collection("users")
-        .doc(id)
-        .get()
-        .then((documentSnapshot) => {
-          console.log(
-            "User data 11: ",
-            documentSnapshot.data().firstname.lastname
-          );
-          setUserData(documentSnapshot.data().firstname);
-          setgetfirstname(documentSnapshot.data().firstname);
-          setgetlastname(documentSnapshot.data().lastname);
-          setgettelephone(documentSnapshot.data().mobileno);
-          setgetaddress(documentSnapshot.data().address);
-          setgetgender(documentSnapshot.data().gender);
-          setgetemail(documentSnapshot.data().email);
-        //   setgetpassword(documentSnapshot.data().password);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-  useEffect(() => {
-    profile();
-  }, []);
-const onUpdatePress = () => {
+  const getUser = async() => {
+    const currentUser = await firebase 
+    .firestore()
+    .collection('users')
+    .doc(id)
+    .get()
+    .then((documentSnapshot) => {
+      if( documentSnapshot.exists ) {
+        console.log('User Data', documentSnapshot.data());
+        setUserData(documentSnapshot.data());
+      }
+    })
+}
+  
+  const onUpdatePress = async() => {
+    let imgUrl = await uploadImage();
 
-    // if (password !== confirmPassword) {
-    //   alert("Passwords don't match.");
-    //   return;
-    // }
-
-    const data = {
-        email,
-        firstname,
-        lastname,
-        gender,
-        mobileno,
-        address,
-        // password,
-    };
-    const usersRef = firebase.firestore().collection("users")
-        usersRef
-        .doc(id)
-        .update(data)
-        .then((firestoreDocument) => {
-            let uId= {id:id};
-            navigation.navigate('Login');
-        })
-};
-  const PickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    console.log(result);
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if( imgUrl == null && userData.userImg ) {
+      imgUrl = userData.userImg;
     }
-  };
+
+    firebase
+    .firestore()
+    .collection('users')
+    .doc(id)
+    .update({
+      firstname: userData.firstname,
+      oname: userData.lastname,
+      gender: userData.gender,
+      mobileno: userData.mobileno,
+      address: userData.address,
+      userImg: imgUrl,
+    })
+    .then(() => {
+      console.log('User Updated!');
+      alert(
+        'Profile Updated!',
+        'Your profile has been updated successfully.'
+      );
+          let uId= id;
+          console.log('logedin as customer',uId);
+          navigation.navigate('CDashboard',{screen:'cProfile',params:{uId}});
+        }
+      )
+  }
+
+
+  const PickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync()
+        .then((image) => {
+              console.log(image);
+              const imageUri = image.uri;
+              setImage(imageUri);
+            //   this.bs.current.snapTo(1);
+            });
+        // if(!result.cancelled) {
+        //   uploadImage(result.uri)
+        //   .then((image) =>{
+        //     Alert.alert("Success");
+        //     console.log(image);
+        //     const imageUri = image.uri;
+        //     setImage(imageUri);
+        //   }).catch((error) => {
+        //     Alert.alert(error);
+        //   })
+        // }        
+      }
+
+      const uploadImage = async () => {
+        if( image == null ) {
+                return null;
+              }
+      const uri= image;
+      const response = await fetch(uri);
+      let filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const blob = await response.blob();
+
+      setUploading(true);
+      setTransferred(0);
+
+      var ref = firebase.storage().ref().child("images/"+filename);
+      const task= ref.put(blob);
+
+      // Set transferred state
+      task.on('state_changed', (taskSnapshot) => {
+        console.log(
+          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+        );
+  
+        setTransferred(
+          Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
+        );
+      });
+  
+      try {
+              await task;
+        
+              const url = await ref.getDownloadURL();
+              console.log(url);
+        
+              setUploading(false);
+              setImage(null);
+        
+              // Alert.alert(
+              //   'Image uploaded!',
+              //   'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
+              // );
+              return url;
+        
+            } catch (e) {
+              console.log(e);
+              return null;
+            }
+
+    }
 
   const formatNumber = (phoneNumberString) => {
     let newText = "";
@@ -157,7 +195,9 @@ const onUpdatePress = () => {
     }
   };
 
-
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <KeyboardAvoidingWrapper>
@@ -176,120 +216,108 @@ const onUpdatePress = () => {
         </TouchableOpacity>
 
         <Text style={styles.header}>Update Your Profile</Text>
-        {/* <Image
-          style={{width:105, height:111, top:'2%'}}
-          source={require('../assets/pic.png')}/> */}
-        <Button title="Choose Image" onPress={PickImage} />
-        {image && (
-          <Image
-            source={{ uri: image }}
-            style={{
-              width: 200,
-              height: 200,
-            }}
-          />
-        )}
-
-        <Text></Text>
+        <TouchableOpacity onPress={() => {PickImage()}}>
+            <View
+              style={{
+                height: 75,
+                width: 75,
+                borderColor:'#3A292A',
+                borderRadius: 25,
+                justifyContent: 'center',
+                alignItems: 'center',
+                
+              }}>
+              <ImageBackground
+                source={{
+                  uri: image
+                    ? image
+                    : userData
+                    ? userData.userImg ||
+                      'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
+                    : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                }}
+                style={{height: 75, width: 75}}
+                imageStyle={{borderRadius: 50}}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    <Feather 
+                        name="camera" 
+                        size={24} 
+                        color="#fff"
+                        style={{
+                        opacity: 0.7,
+                        alignItems: 'center',
+                         justifyContent: 'center',
+                         borderWidth: 1,
+                        borderColor: '#fff',
+                        borderRadius: 10,
+                        }} 
+                    />
+                </View>
+                </ImageBackground>
+            </View>
+            </TouchableOpacity>
 
         <TextInput
           style={styles.textinput1}
-          placeholder={getfirstname}
-          defaultValue={getfirstname}
-          underlineColorAndroid={"transparent"}
-          labelValue={getfirstname}
-          onChangeText={(firstname) => setfirstname(firstname)}
+          placeholder="Firstname"
+          value={userData ? userData.firstname : ''}
+          onChangeText={(txt) => setUserData({...userData, firstname: txt})}
           autoCapitalize="none"
           autoCorrect={false}
         />
 
         <TextInput
           style={styles.textinput2}
-          placeholder={getlastname}
-          defaultValue={getlastname}
-          underlineColorAndroid={"transparent"}
-          labelValue={getlastname}
-          onChangeText={(lastname) => setlastname(lastname)}
+          placeholder="Lastname"
+          value={userData ? userData.lastname : ''}
+          onChangeText={(txt) => setUserData({...userData, lastname: txt})}
           autoCapitalize="none"
           autoCorrect={false}
         />
 
-        <TextInput
-          style={styles.textinput}
-          placeholder={getemail}
-          defaultValue={getemail}
-          labelValue={getemail}
-          onChangeText={(userEmail) => setEmail(userEmail)}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-
-        <View style={styles.pickercont}>
+        {/* <View style={styles.pickercont}>
             <Picker
                 itemStyle={{ backgroundColor: "#fff" }}
                 placeholder="Gender"
-                labelValue={getgender}
+                
                 selectedValue={selectedValue}
                     onValueChange={(gender, itemIndex) => {
                     if (gender !== "disabled") {
-                    setSelectedValue(gender);
+                    setSelectedValue(userData ? userData.gender : '');
                     }
-                    setgender(gender);
+                    {(txt) => setUserData({...userData, gender: txt})}
                 }}
             >
           <Picker.Item label="Gender" value="disabled" color="#aaa" />
           <Picker.Item label="Male" value="Male" />
           <Picker.Item label="Female" value="Female" />
         </Picker>
-        </View>
+        </View> */}
 
-        <TextInput
-          style={styles.textinput4}
-          placeholder="Birthday"
-          underlineColorAndroid={"transparent"}
-        />
+        
 
         <TextInput
           style={styles.textinput5}
-          defaultvalue={gettelephone}
-          placeholder={gettelephone}
-          underlineColorAndroid={"transparent"}
-          labelValue={gettelephone}
-          onChangeText={(mobileno) => setmobile(mobileno)}
+          placeholder="Mobile Number"
+          value={userData ? userData.mobileno : ''}
+          onChangeText={(txt) => setUserData({...userData, mobileno: txt})}
           autoCapitalize="none"
           autoCorrect={false}
         />
 
         <TextInput
           style={styles.textinput5}
-          
-          defaultValue={getaddress}
-          placeholder={getaddress}
-          underlineColorAndroid={"transparent"}
-          labelValue={getaddress}
-          onChangeText={(address) => setaddress(address)}
+          placeholder="Address"
+          value={userData ? userData.address : ''}
+          onChangeText={(txt) => setUserData({...userData, address: txt})}
           autoCapitalize="none"
           autoCorrect={false}
         />
-
-        {/* <TextInput
-          style={styles.textinput5}
-          defaultValue={getpassword}
-          placeholder={getpassword}
-          labelValue={password}
-          onChangeText={(userPassword) => setPassword(userPassword)}
-          placeholder="Password"
-          secureTextEntry={true}
-        />
-
-        <TextInput
-          style={styles.textinput5}
-          placeholder=" Confirm Password"
-          underlineColorAndroid={"transparent"}
-          secureTextEntry={true}
-          labelValue={confirmPassword}
-          onChangeText={(confirmPassword) => setcofirmPassword(confirmPassword)}
-        /> */}
 
         <TouchableOpacity
           style={styles.button}
@@ -316,7 +344,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(52, 52, 52, 0)",
     borderRadius: 25,
     width: 200,
-    position: "relative",
+    position: 'absolute',
     top: "1%",
     left: "-25%",
   },
@@ -327,10 +355,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     top: "0%",
     color: "#3A292A",
-    position: "relative",
+    position: 'absolute',
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     paddingLeft: 10,
   },
+
+  
+
   textinput: {
     width: 375,
     height: 40,
@@ -432,7 +463,7 @@ const styles = StyleSheet.create({
   },
 
   pickercont:{
-    width: 175,
+    width: 375,
     height: 40,
     backgroundColor: "#fff",
     borderRadius: 25,
@@ -440,7 +471,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#3A292A",
     top: "-6%",
-    left: "-25%",
+    
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: {
@@ -461,7 +492,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     color: "#3A292A",
-    top: "-14%",
+    top: "-5%",
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: {

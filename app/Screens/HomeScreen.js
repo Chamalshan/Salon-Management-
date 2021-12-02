@@ -53,8 +53,13 @@ const HomeScreen=({navigation,route})=>{
         navigation.navigate('Advertisments',{uId})
     }
 
+    const appedit=()=>{
+        let uId= id;
+        navigation.navigate('EditSalonProfile',{uId})
+    }
+
     return (
-            <KeyboardAvoidingWrapper>
+
                 <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
                 <View style={styles.helloTextCont}>
                     <Text style={styles.hellotext1}>Hello {name}!</Text>    
@@ -76,7 +81,7 @@ const HomeScreen=({navigation,route})=>{
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.editprofileCont}
-                        onPress={() => navigation.navigate('EditSalonProfile')}
+                        onPress={() => appedit()}
                     >
                         <View style={styles.editprofilebox}>
                             <Text style={styles.editprofiletxt}>Edit Profile</Text>
@@ -86,7 +91,6 @@ const HomeScreen=({navigation,route})=>{
                  
                 </View>
                 </ImageBackground>
-            </KeyboardAvoidingWrapper>
     );
 }
 

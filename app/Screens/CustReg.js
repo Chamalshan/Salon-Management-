@@ -186,6 +186,9 @@ export default function CustReg({navigation}) {
       }
     }
 
+      const dayPickPress=()=>{
+        navigation.navigate('daypick');
+      }
 
 
   const onChange = (event, selectedDate) => {
@@ -322,11 +325,8 @@ export default function CustReg({navigation}) {
         <Button onPress={showTimepicker} title="Show time picker!" />
       </View>
         </View> */}
-      <TouchableOpacity style={styles.textinput4}
-        onPress={showDatepicker}
-      >
-          </TouchableOpacity>
-        <View>
+     
+        {/* <View>
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -338,7 +338,7 @@ export default function CustReg({navigation}) {
             onChange={onChange}
           />
         )}
-        </View>
+        </View> */}
 
         {/* <TextInput style={styles.textinput4} 
         placeholder="Birthday" 
@@ -387,6 +387,14 @@ export default function CustReg({navigation}) {
             </Text>
             
         </TouchableOpacity>
+
+        {/* <TouchableOpacity style={styles.button}
+        onPress={() =>{dayPickPress()}}>
+            <Text style={styles.btnTxt}>
+                daypick
+            </Text>
+            
+        </TouchableOpacity> */}
       </ImageBackground>
       </KeyboardAvoidingWrapper>
     );
@@ -518,7 +526,7 @@ export default function CustReg({navigation}) {
       paddingHorizontal:16,
       fontSize:16,
       color:'#3A292A',
-      top:'-14%',
+      top:'-8%',
       elevation:5,
       shadowColor:'#000',
       shadowOffset:{

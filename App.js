@@ -31,8 +31,12 @@ import CeditProfile from './app/Screens/ceditProfile';
 import SalonPage from './app/Screens/SalonPage';
 import CusApp from './app/Screens/CustApp'
 import SalonEdit2 from './app/Screens/SalonEdit2';
+import mapScreen from './app/Screens/mapScreen';
+import daypick from './app/Screens/daypick';
 import Salonlist from './app/Screens/shoplist';
 import * as firebase from "firebase";
+//import { mapview } from './app/Screens/mapview';
+//import map from './app/Screens/map 2';
 
 const AppStack= createStackNavigator();
 
@@ -65,7 +69,10 @@ const App=()=>{
           <AppStack.Screen name="Salon" component={SalonPage}/>
           <AppStack.Screen name="CustApp" component={CusApp}/>
           <AppStack.Screen name="Salonedit2" component={SalonEdit2}/>
-          <AppStack.Screen name="Salonlist" component={ Salonlist }/>
+          <AppStack.Screen name="mapScreen" component={mapScreen}/>
+          <AppStack.Screen name="daypick" component={daypick}/>
+          {/* <AppStack.Screen name="Salonlist" component={ Salonlist }/> */}
+          {/* <AppStack.Screen name="map" component={map}/> */}
       </AppStack.Navigator> 
     </NavigationContainer>
   );

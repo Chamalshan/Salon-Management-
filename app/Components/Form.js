@@ -39,7 +39,7 @@ const Form = ({navigation})=>{
               console.log('logedin as merchant',uId);
               }else{
                 let uId= {id:firestoreDocument.id};
-              navigation.navigate('CDashboard',{screen:'cProfile',params:{uId}})||navigation.navigate('CDashboard',{screen:'Category',params:{uId}})||navigation.navigate('CDashboard',{screen:'cHome',params:{uId}});
+              navigation.navigate('CDashboard',{screen:'cProfile',params:{uId}})||navigation.navigate('CDashboard',{screen:'cAppointment',params:{uId}})||navigation.navigate('CDashboard',{screen:'Category',params:{uId}})||navigation.navigate('CDashboard',{screen:'cHome',params:{uId}});
               console.log('logedin as customer',uId);
             }
         })

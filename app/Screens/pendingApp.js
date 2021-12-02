@@ -1,65 +1,146 @@
-import React from 'react'
+import React, { useState,useEffect }  from 'react';
 import {  StyleSheet, Text, View,ImageBackground,TouchableOpacity ,Image ,FlatList} from 'react-native';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import * as firebase from 'firebase';
 import { DataProvider,LayoutProvider,RecyclerListView} from 'recyclerlistview';
+import { Query } from 'parse';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const ProfileScreen = ({navigation,route}) => {
-    const id=route.params.uId;
-    console.log('Pending Appontment',id);
+    
+    const [userData, setUserData] = useState(null);
+    const [currentdate,setcurrentdate]= useState();
+    const [sid,setsid]=useState();
+    // const cid=route.params.uId;
+    // console.log('Pending Appontment',cid);
+    const [shop,setshop]= useState(null);
+    const fieldPath = new firebase.firestore.FieldPath('appointment', 'date');
 
-    // constructor(props){
-    //   super(props);
-  
-    //   const fakeData = [];
-    //   for(i = 0; i < 100; i+= 1) {
-    //     fakeData.push({
-    //       type: 'NORMAL',
-    //       item: {
-    //         id: i,
-    //         image: faker.image.avatar(),
-    //         name: faker.name.firstName(),
-    //         description: faker.random.words(5),
-    //       },
-    //     });
-    //   }
-    //   this.state = {
-    //     list: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(fakeData),
-    //   };
-  
-    //   this.layoutProvider = new LayoutProvider((i) => {
-    //     return this.state.list.getDataForIndex(i).type;
-    //   }, (type, dim) => {
-    //     switch (type) {
-    //       case 'NORMAL': 
-    //         dim.width = SCREEN_WIDTH;
-    //         dim.height = 100;
-    //         break;
-    //       default: 
-    //         dim.width = 0;
-    //         dim.height = 0;
-    //         break;
-    //     };
-    //   })
-    // }
+    const getAppointments = async() => {
+        try{
+            const list=[];
+            // setcurrentdate(Date.now);
+            // console.log(currentdate);
 
-    // rowRenderer = (type, data) => {
-    //   const { image, name, description } = data.item;
-    //   return (
-    //     <View style={styles.listItem}>
-    //       <Image style={styles.image} source={{ uri: image }} />
-    //       <View style={styles.body}>
-    //         <Text style={styles.name}>{name}</Text>
-    //         <Text style={styles.description}>{description}</Text>
-    //       </View>
-    //     </View>
-    //   )
-    // }
+            const currentappo = await firebase
+            .firestore()
+            .collection('appointment')
+            // .orderBy('date')
+            .where('state',"==",'pending')
+            // .limitToFirst(10)
+            .get()
+            .then((querySnapshot)=>{
+    
+                querySnapshot.forEach((doc) => {
+                    const {
+                      id,
+                      date,
+                      time,
+                    //   location,
+                      
+                    } = doc.data();
+          
+                    
+                    list.push({
+                      id: doc.id,
+
+                      date,
+                      time
+                    //   location,
+                      
+                    });
+                    setsid(doc.id);
+                  }
+                  );
+                  
+                })
+            setshop(list);
+            console.log(list);
+            }catch(e){
+                console.log(e);
+            }
+    }  
+
+    const sendComfirm=()=>{
+        
+
+        firebase
+        .firestore()
+        .collection('appointment')
+        .doc(sid)
+        .update({
+          state:'confirmed',
+          // service:userData.service,
+        })
+        .then(() => {
+          console.log('Confirmed');
+          alert('Appointment Confirmed');
+          // let uId= id;
+          navigation.navigate('ShowAppointment');
+          // console.log('logedin as customer',uId);
+        }
+        )
+    }
+
+    const sendCancel=()=>{
+        
+
+        firebase
+        .firestore()
+        .collection('appointment')
+        .doc(sid)
+        .update({
+          state:'cancelled',
+          // service:userData.service,
+        })
+        .then(() => {
+          console.log('Cancelled');
+          alert('Appointment Cancelled');
+          // let uId= id;
+          navigation.navigate('CancelledAppointments');
+          // console.log('logedin as customer',uId);
+        }
+        )
+    }
 
     
+
+    const onLocationPress=()=>{
+        navigation.navigate('mapScreen');
+    }
+
+    
+
+    const Item = ({ date,time,id }) => (
+      
+        
+            <View style={styles.appointmentbox}>
+                <Text style={styles.intext1}> Appointment {id} </Text>
+              <Text style={styles.intext2}>Date: {date}</Text>
+              <Text style={styles.intext2}>Time: {time}</Text>
+                <TouchableOpacity style={styles.okicon} onPress={() =>{sendComfirm()}}>
+                    <Ionicons name="md-checkmark-circle" size={45} color="green" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.closeicon} onPress={() =>{sendCancel()}}>
+                    <AntDesign name="closecircle" size={39} color="red"/> 
+                </TouchableOpacity>  
+            </View>
+        
+        );
+
+        const renderItem = ({ item }) => (
+            <Item date={item.date} time={item.time}/>
+            );
+    
+
+            useEffect(()=>{
+                getAppointments();
+            }, []);
+
     return (
-        <KeyboardAvoidingWrapper>
+        
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
                 <View style={styles.penddingCont}>
                     <Text style={styles.pendingtext}>Pending Appointments</Text>
@@ -72,44 +153,35 @@ const ProfileScreen = ({navigation,route}) => {
                     /> 
                     </TouchableOpacity>
 
-                    {/* <Ionicons name="md-checkmark-circle" size={32} color="green" /> */}
 
-                    {/* <RecyclerListView
-                        dataProvider={this.state.dataProvider}
-                        layoutProvider={this.layoutProvider}
-                        rowRenderer={this.rowRenderer}
-                        extendedState={{ someThingHappen: this.state.someThingHappen }}
-                        onEndReached={this.fetchMore}
-                        onEndReachedThreshold={0.5}
-                        renderFooter={() =>
-                        this.state.loadingMore && (
-                            <Text
-                                style={{ padding: 10, fontWeight: 'bold', textAlign: 'center' }}
-                            >
-                            Loading
-                            </Text>
-                            )
-                        }
-                    /> */}
-
-                    <View style={styles.appointmentbox}>
+                    {/* <View style={styles.appointmentbox}>
                         <Text style={styles.appointmenttxtbtn}>
                             Appointment 1
                         </Text>
                         <Text style={styles.intext2}>Date</Text>
                         <Text style={styles.intext2}>Time</Text>
                         <Text style={styles.intext2}>Service</Text>
-                        <TouchableOpacity style={styles.okicon}>
+                        <TouchableOpacity style={styles.okicon} onPress={() =>{onLocationPress()}}>
                         <Ionicons name="md-checkmark-circle" size={45} color="green" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.closeicon}>
                         <AntDesign name="closecircle" size={39} color="red"/> 
                         </TouchableOpacity>
+                    </View> */}
+
+                    <View style={{top:'10%'}} >
+                        <FlatList 
+                            data={shop}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id}
+                            showsVerticalScrollIndicator={false}
+                            
+                        />
                     </View>
 
                 </View>
             </ImageBackground>
-        </KeyboardAvoidingWrapper>
+        
     )
 
 }
@@ -130,7 +202,7 @@ const styles = StyleSheet.create({
         alignItems:"flex-end",
         justifyContent:"center",
         marginVertical:16,
-        flexDirection:'row'
+        flexDirection:'row',
     },
 
     pendingtext:{
@@ -138,9 +210,9 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         fontSize:30,
         top:"0%",
-        left:"-35%",
+        // left:"35%",
         color:"#3A292A",
-        position:"absolute",     
+        position:'absolute',     
     },
 
     backbutton:{
@@ -153,11 +225,11 @@ const styles = StyleSheet.create({
     },
 
     appointmentbox:{
-        // top:"20%",           
+        //  top:"30%",           
         width:375,
         height:150,
         backgroundColor: '#fff',
-        // position: 'absolute',
+        position: 'relative',
         borderRadius:15,
         elevation:5,
         shadowColor:'#000',
@@ -166,9 +238,9 @@ const styles = StyleSheet.create({
           height:1,
         },
         shadowRadius:100,
-        position:'absolute',
-        top:'10%',
-        left:'-45%',
+        // top:'10%',
+        // left:'-45%',
+        marginTop:10,
     },
 
     appointmenttxtbtn:{
@@ -178,16 +250,16 @@ const styles = StyleSheet.create({
          top:"10%",
          left:"10%",
         color:"#3A292A",
-        // position:"absolute",
+        position:'relative',
     },
 
     appointmentCont:{
         backgroundColor:'rgba(52, 52, 52, 0)',   
         borderRadius:25,
         width:200,
-        position:'absolute',
-        top:'35%',
-        left:'-45%',
+        position:'relative',
+        // top:'35%',
+        // left:'-45%',
     },
 
     intext2:{
@@ -198,7 +270,19 @@ const styles = StyleSheet.create({
          left:"10%",
         color:"#3A292A",
         // position:"absolute",
+        marginTop:10,
     },
+
+    intext1:{
+        fontFamily:'Roboto',
+        fontWeight:'bold',
+        fontSize:25,
+         top:"10%",
+         left:"10%",
+        color:"#3A292A",
+        // position:"absolute",
+    },
+
 
     okicon:{
         position:"absolute",

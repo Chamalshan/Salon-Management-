@@ -20,9 +20,10 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./app/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+      "config":{
+        "googleMaps":{
+          "apiKey":"AIzaSyCsPTzLfhjeNUI2XhqZYLEyfEFWZ4KcmOg"
+        }
       }
     },
     "web": {

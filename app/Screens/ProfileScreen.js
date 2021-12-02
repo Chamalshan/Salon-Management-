@@ -54,7 +54,6 @@ const ProfileScreen=({navigation,route})=>{
         profile();
     }, []);
     return (
-        <KeyboardAvoidingWrapper>
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
             <View style={styles.profileCon}>
                 <Text style={styles.profiletext}>Profile</Text>
@@ -84,7 +83,6 @@ const ProfileScreen=({navigation,route})=>{
                 </TouchableOpacity>
             </View>
             </ImageBackground>
-        </KeyboardAvoidingWrapper>
     );
 }
 

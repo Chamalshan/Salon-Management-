@@ -7,7 +7,8 @@ import { Text,
    ImageBackground,
    Image,
    TouchableOpacity,
-   TextInput } from 'react-native';
+   TextInput,
+    image } from 'react-native';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { firebase } from '../navigation/firebase';
 
@@ -20,7 +21,7 @@ const cProfileScreen=({navigation,route})=>{
     const [address, setaddress] = useState();
     const [gender, setgender] = useState();
     const [dob, setdob] = useState();
-
+    const [userImg,setimg] = useState();
     console.log(navigation)
     const {id}=route.params.uId;
     console.log('Profile',id)
@@ -44,7 +45,7 @@ const cProfileScreen=({navigation,route})=>{
             settelephone(documentSnapshot.data().mobileno);
             setaddress(documentSnapshot.data().address);
             setgender(documentSnapshot.data().gender);
-            
+            setimg(documentSnapshot.data().userImg);
             })
             .catch(error => {
                 console.log(error);
@@ -54,15 +55,30 @@ const cProfileScreen=({navigation,route})=>{
         profile();
     }, []);
     return (
-        <KeyboardAvoidingWrapper>
+ 
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
             <View style={styles.profileCon}>
                 <Text style={styles.profiletext}>Profile</Text>
 
-                <Image
+                {/* <Image
                     style={styles.profilepic}
                     source={require("../assets/pic.png")}
-                />
+                /> */}
+            <View
+              style={styles.profilepic}>
+              <ImageBackground
+                source={{
+                  uri: image
+                    ? image
+                    : userImg ||
+                      'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
+                    
+                }}
+                style={{height: 75, width: 75}}
+                imageStyle={{borderRadius: 50}}>
+                
+                </ImageBackground>
+            </View>
                 <Text style={styles.nametext}       >{firstname} {lastname}</Text>
                 <Text style={styles.telephonetxt}   >Telephone  : {telephone}</Text>
                 <Text style={styles.addresstxt}     >Address      : {address}</Text>
@@ -84,7 +100,7 @@ const cProfileScreen=({navigation,route})=>{
                 </TouchableOpacity>
             </View>
             </ImageBackground>
-        </KeyboardAvoidingWrapper>
+
     );
 }
 

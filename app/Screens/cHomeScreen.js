@@ -63,7 +63,7 @@ const CHomeScreen=({route,navigation})=>{
     //     });
 
     return (
-        <KeyboardAvoidingWrapper>
+ 
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
             <View style={styles.helloTextCont}>
                 <Text style={styles.hellotext1}>Hello {firstname} !</Text>    
@@ -98,7 +98,7 @@ const CHomeScreen=({route,navigation})=>{
                                   
             </View>
             </ImageBackground>
-        </KeyboardAvoidingWrapper>
+
     );
 }
 

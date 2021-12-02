@@ -19,9 +19,10 @@ import { setStatusBarHidden } from 'expo-status-bar';
 
 
 const shoplist = ({navigation,route}) => {
+  
+
   const  id  = route.params.id;
   console.log("Salon list", id);
-  
 
     const [shop,setshop]= useState(null);
     const [sid,setsid]=useState();
@@ -29,9 +30,10 @@ const shoplist = ({navigation,route}) => {
         try{
         const list=[];
 
-        await firebase
+        const currentUser = await firebase
         .firestore()
         .collection('shop')
+        .limitToFirst(20)
         .orderBy('name','desc')
         .get()
         .then((querySnapshot)=>{
@@ -44,51 +46,52 @@ const shoplist = ({navigation,route}) => {
                   
                 } = doc.data();
       
-                setsid(id);
+                
                 list.push({
                   id: doc.id,
+                  id,
                   name,
                   location,
                   
                 });
-               
+                setsid(id);
               }
-              
               );
               
             })
-
         setshop(list);
+        
         }catch(e){
             console.log(e);
         }
     }
 
-    useEffect(()=>{
-        fetchnames();
-    })
-
-
+    
+    
     
     const Item = ({ name,location }) => (
-        <TouchableHighlight onPress={()=>navigation.navigate('Salon',{id})}>
+      
+      <TouchableHighlight onPress={()=>navigation.navigate('Salon',{id,sid})}>
           <View style={styles.shopbox}>
             <Text style={styles.shoptxt}>{name}</Text>
-            <Text style={styles.shoptxt}>{location}</Text>  
+            <Text style={styles.locationtxt}>{location}</Text>  
           </View>
-        </TouchableHighlight>
+      </TouchableHighlight>
       );
-    
+      
       // const Item2=({ location }) =>(
-      //   <View style={styles.shopbox}>
-      //     <Text style={styles.locationtxt}>{location}</Text>
-      //   </View>
-      // );
-
-    const renderItem = ({ item }) => (
-        <Item name={item.name}/>
-    );
-
+        //   <View style={styles.shopbox}>
+        //     <Text style={styles.locationtxt}>{location}</Text>
+        //   </View>
+        // );
+        
+        const renderItem = ({ item }) => (
+          <Item name={item.name} location={item.location}/>
+          );
+          
+          useEffect(()=>{
+              fetchnames();
+            }, []);
     
 
 
@@ -151,7 +154,7 @@ const styles = StyleSheet.create({
     locationtxt:{
       fontFamily:'Roboto',
       fontWeight:'bold',
-      fontSize:25,
+      fontSize:20,
        top:"90%",
        left:"10%",
       color:"#3A292A",
