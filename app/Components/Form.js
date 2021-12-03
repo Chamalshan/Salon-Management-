@@ -14,18 +14,16 @@ import { LogBox } from 'react-native';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
-
-
 const Form = ({navigation})=>{
 //export default function Form() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [user,setuser]= useState()
   const onLoginPress = () => {
-      firebase
-          .auth()
-          .signInWithEmailAndPassword(email, password)
-          .then((response) => {
+    firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then((response) => {
       const uid = response.user.uid
       // const uId = uid
       const usersRef = firebase.firestore().collection('users')
@@ -41,10 +39,13 @@ const Form = ({navigation})=>{
                 let uId= {id:firestoreDocument.id};
               navigation.navigate('CDashboard',{screen:'cProfile',params:{uId}})||navigation.navigate('CDashboard',{screen:'cAppointment',params:{uId}})||navigation.navigate('CDashboard',{screen:'Category',params:{uId}})||navigation.navigate('CDashboard',{screen:'cHome',params:{uId}});
               console.log('logedin as customer',uId);
+              
             }
+          })
         })
-      })
-  }
+      }
+
+
 
     return (
       <View style={styles.container}>
@@ -70,13 +71,12 @@ const Form = ({navigation})=>{
               <Text style={styles.btnTxt}>
                   Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Text style={styles.forgotTxt}>Forgot Password?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
       </View>
     );
-    
-    };
+    }
 
     export default Form;
   const styles= StyleSheet.create({

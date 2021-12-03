@@ -31,13 +31,13 @@ const AppointmentScreen = ({navigation,route}) => {
                 <View style={styles.appoinmentTextCont}>
                     <Text style={styles.appoinmenttext}>Appointments </Text>
 
-                    <TouchableOpacity style={styles.backbutton}
-                    onPress={() => navigation.navigate("Home")}>
+                    {/* <TouchableOpacity style={styles.backbutton}
+                    onPress={() => navigation.navigate("Home",id)}>
                     <Image
                         style={{width:28, height:28}}
                         source={require('../assets/back.png')}
                     /> 
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <TouchableOpacity style={styles.pendingCont}
                         onPress={() => pendapp()}
@@ -135,8 +135,8 @@ const styles = StyleSheet.create({
     appointmenttxtbtn:{
         fontFamily:'Roboto',
         fontWeight:'bold',
-        fontSize:25,
-         top:"10%",
+        fontSize:35,
+         top:"35%",
          left:"10%",
         color:"#3A292A",
         // position:"absolute",
@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
     pendingtxt:{
         fontFamily:'Roboto',
         fontWeight:'bold',
-        fontSize:25,
-         top:"10%",
+        fontSize:35,
+         top:"35%",
          left:"10%",
         color:"#3A292A",
         // position:"absolute",
@@ -205,8 +205,8 @@ const styles = StyleSheet.create({
     cancelledtxt:{
         fontFamily:'Roboto',
         fontWeight:'bold',
-        fontSize:25,
-         top:"10%",
+        fontSize:35,
+         top:"35%",
          left:"10%",
         color:"#3A292A",
         // position:"absolute",
@@ -240,8 +240,8 @@ const styles = StyleSheet.create({
     completedtxt:{
         fontFamily:'Roboto',
         fontWeight:'bold',
-        fontSize:25,
-         top:"10%",
+        fontSize:35,
+         top:"35%",
          left:"10%",
         color:"#3A292A",
         // position:"absolute",

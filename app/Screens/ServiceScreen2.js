@@ -18,59 +18,59 @@ const ServiceScreen = ({ navigation, route }) => {
       source={require("../assets/bg-01.png")}
     >
       <View style={styles.categoryTextCont}>
-        <Text style={styles.welcome}>Category Hair</Text>
+        <Text style={styles.welcome}>Category Skin and Beauty</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Hair Style' })}
+          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Facial'})}
         >
-          <Text style={styles.btnTxt}>Hair Style</Text>
+          <Text style={styles.btnTxt}>Facial</Text>
           <Image 
           style={{height: 100, width: 100,top: '-50%' }}
-          source={require("../assets/Hair_Style.png")} 
+          source={require("../assets/Face-01.png")} 
           />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Hair treatment'})}
+          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Face Treatment' })}
         >
-          <Text style={styles.btnTxt}>Hair treatment</Text>
+          <Text style={styles.btnTxt}>Face Treatment</Text>
           <Image 
           style={{height: 100, width: 100,top: '-50%' }}
-          source={require("../assets/treat-01.png")} 
+          source={require("../assets/Facial-01.png")} 
           />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Hair Curling'})}
+          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Eyebrow Threading' })}
         >
-          <Text style={styles.btnTxt}>Hair Curling </Text>
+          <Text style={styles.btnTxt}>  Eyebrow Threading </Text>
           <Image 
-          style={{height: 100, width: 100,top: '-50%' }}
-          source={require("../assets/curl-01.png")} 
+          style={{height: 90, width: 90,top: '-50%' }}
+          source={require("../assets/Eyebrow-01.png")} 
           />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Hair Straightening'})}
+          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Menique' })}
         >
-          <Text style={styles.btnTxt}>Hair Straightening</Text>
+          <Text style={styles.btnTxt}>Menique</Text>
           <Image 
           style={{height: 100, width: 100,top: '-50%' }}
-          source={require("../assets/Straightening-01.png")} 
+          source={require("../assets/Menique-01.png")} 
           />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Hair Colouring'})}
+          onPress={() => navigation.navigate("Salon", { id ,categoryid: 'Pedique' })}
         >
-          <Text style={styles.btnTxt}>Hair Colouring</Text>
+          <Text style={styles.btnTxt}>Pedique</Text>
           <Image 
           style={{height: 100, width: 100,top: '-50%' }}
-          source={require("../assets/Hair_Style.png")} 
+          source={require("../assets/Pedique-01.png")} 
           />
         </TouchableOpacity>
       </View>

@@ -91,7 +91,7 @@ export default function CustReg({ navigation,route }) {
       );
           let uId= id;
           console.log('logedin as customer',uId);
-          navigation.navigate('CDashboard',{screen:'cProfile',params:{uId}});
+          navigation.navigate('cProfile',{uId});
         }
       )
   }

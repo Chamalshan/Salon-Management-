@@ -11,7 +11,7 @@ import {
 import * as firebase from 'firebase';
 import KeyboardAvoidingWrapper from "../Components/KeyboardAvoidingWrapper";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons';
 
 const ShowAppointment = ({ navigation, route }) => {
   const [userData, setUserData] = useState(null);
@@ -41,14 +41,14 @@ const ShowAppointment = ({ navigation, route }) => {
               id,
               date,
               time,
-              //   location,
+              service,
             } = doc.data();
 
             list.push({
               id: doc.id,
               date,
               time,
-              //   location,
+              service,
             });
             setsid(doc.id);
           });
@@ -82,20 +82,23 @@ const ShowAppointment = ({ navigation, route }) => {
     navigation.navigate("mapScreen");
   };
 
-  const Item = ({ date, time }) => (
+  const Item = ({ date, time, service }) => (
     <View style={styles.appointmentbox}>
       <Text style={styles.appointmenttxtbtn}>Appointment </Text>
-      <Text style={styles.intext2}>Date{date}</Text>
-      <Text style={styles.intext2}>Time{time}</Text>
-      <Text style={styles.intext2}>Services</Text>
-      <TouchableOpacity style={styles.okicon} onPress={() =>{sendCompleted(id)}}>
+      <Text style={styles.intext2}>Date :{date}</Text>
+      <Text style={styles.intext2}>Time :{time}</Text>
+      <Text style={styles.intext2}>Services :{service}</Text>
+      <TouchableOpacity style={styles.okicon} onPress={() =>{sendCompleted()}}>
         <Ionicons name="md-checkmark-circle" size={60} color="green" />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.locicon} onPress={() =>{onLocationPress()}}>
+      <Entypo name="location-pin" size={60} color="red" />
       </TouchableOpacity>
     </View>
   );
 
   const renderItem = ({ item }) => (
-    <Item date={item.date} time={item.time} />
+    <Item date={item.date} time={item.time} service={item.service} />
 );
 
   useEffect(() => {
@@ -226,13 +229,19 @@ const styles = StyleSheet.create({
 
   okicon: {
     position: "absolute",
-    top: "28%",
+    top: "10%",
     left: "80%",
   },
 
   closeicon: {
     position: "absolute",
-    top: "50%",
+    top: "30%",
     left: "80%",
   },
+
+  locicon:{
+    position:"absolute",
+    top:"50%",
+    left:"80%",
+  }
 });

@@ -33,6 +33,7 @@ import CusApp from './app/Screens/CustApp'
 import SalonEdit2 from './app/Screens/SalonEdit2';
 import mapScreen from './app/Screens/mapScreen';
 import daypick from './app/Screens/daypick';
+import ServiceScreen2 from './app/Screens/ServiceScreen2';
 import Salonlist from './app/Screens/shoplist';
 import * as firebase from "firebase";
 //import { mapview } from './app/Screens/mapview';
@@ -71,6 +72,7 @@ const App=()=>{
           <AppStack.Screen name="Salonedit2" component={SalonEdit2}/>
           <AppStack.Screen name="mapScreen" component={mapScreen}/>
           <AppStack.Screen name="daypick" component={daypick}/>
+          <AppStack.Screen name="ServiceScreen2" component={ServiceScreen2}/>
           {/* <AppStack.Screen name="Salonlist" component={ Salonlist }/> */}
           {/* <AppStack.Screen name="map" component={map}/> */}
       </AppStack.Navigator> 

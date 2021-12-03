@@ -47,17 +47,16 @@ const Advertisements=({navigation,route})=>{
     firebase
     .firestore()
     .collection('adds')
-    .doc(id)
-    .set({
+    .doc('01mQwu24TLTW9zXNgqyTokVk69r2')
+    .update({
       uri: imgUrl,
-      sid: id,
+      // sid: id,
     })
     .then(() => {
       console.log('Add Added');
-      // alert(
-      //   'Profile Updated!',
-      //   'Your profile has been updated successfully.'
-      // );
+      alert(
+        'Advertisment Added'
+      );
           
         }
       )

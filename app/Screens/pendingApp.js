@@ -1,5 +1,5 @@
 import React, { useState,useEffect }  from 'react';
-import {  StyleSheet, Text, View,ImageBackground,TouchableOpacity ,Image ,FlatList} from 'react-native';
+import {  StyleSheet, Text, View,ImageBackground,TouchableOpacity ,Image ,FlatList, Alert} from 'react-native';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -38,7 +38,7 @@ const ProfileScreen = ({navigation,route}) => {
                       id,
                       date,
                       time,
-                    //   location,
+                      service,
                       
                     } = doc.data();
           
@@ -47,8 +47,8 @@ const ProfileScreen = ({navigation,route}) => {
                       id: doc.id,
 
                       date,
-                      time
-                    //   location,
+                      time,
+                      service,
                       
                     });
                     setsid(doc.id);
@@ -83,6 +83,7 @@ const ProfileScreen = ({navigation,route}) => {
         }
         )
     }
+    
 
     const sendCancel=()=>{
         
@@ -113,13 +114,14 @@ const ProfileScreen = ({navigation,route}) => {
 
     
 
-    const Item = ({ date,time,id }) => (
+    const Item = ({ date,time,id,service }) => (
       
         
             <View style={styles.appointmentbox}>
                 <Text style={styles.intext1}> Appointment {id} </Text>
               <Text style={styles.intext2}>Date: {date}</Text>
               <Text style={styles.intext2}>Time: {time}</Text>
+              <Text style={styles.intext2}>Service: {service}</Text>
                 <TouchableOpacity style={styles.okicon} onPress={() =>{sendComfirm()}}>
                     <Ionicons name="md-checkmark-circle" size={45} color="green" />
                 </TouchableOpacity>
@@ -131,7 +133,7 @@ const ProfileScreen = ({navigation,route}) => {
         );
 
         const renderItem = ({ item }) => (
-            <Item date={item.date} time={item.time}/>
+            <Item date={item.date} time={item.time} service={item.service}/>
             );
     
 
@@ -270,7 +272,7 @@ const styles = StyleSheet.create({
          left:"10%",
         color:"#3A292A",
         // position:"absolute",
-        marginTop:10,
+        marginTop:8,
     },
 
     intext1:{

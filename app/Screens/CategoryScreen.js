@@ -27,14 +27,28 @@ const CategoryScreen = ({ navigation, route }) => {
           style={styles.button}
           onPress={() => navigation.navigate("ServiceScreen", { id })}
         >
-          <Text style={styles.btnTxt}>Hair</Text>
+          <ImageBackground
+            style={{ height: 250, width: 350, position:'absolute', borderRadius: 15, }}
+            source={require("../assets/Hair.png")}
+          >
+            <View style={styles.txtback}>
+              <Text style={styles.btnTxt}>Hair</Text>
+            </View>
+          </ImageBackground>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("ServiceScreen", { id })}
+          onPress={() => navigation.navigate("ServiceScreen2", { id })}
         >
-          <Text style={styles.btnTxt}>Skin and Beauty</Text>
+          <ImageBackground
+            style={{ height: 250, width: 350, position:'absolute', borderRadius: 15, }}
+            source={require("../assets/SkinCare.jpg")}
+          >
+            <View style={styles.txtback}>
+              <Text style={styles.btnTxt2}>Skin and Beauty</Text>
+            </View>
+          </ImageBackground>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -61,8 +75,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  categoryTextCont:{
-    position:'relative',
+  categoryTextCont: {
+    position: "relative",
   },
 
   welcome: {
@@ -70,16 +84,36 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     color: "#3A292A",
-    top: '-5%',
+    top: "-5%",
     position: "relative",
     // flex:1
   },
   btnTxt: {
-    fontSize: 20,
-    fontWeight: "500",
-    color: "#ffffff",
+    fontFamily: "Roboto",
+    fontWeight: "bold",
+    fontSize: 30,
+    // fontWeight: "500",
+    color: "#fff",
     textAlign: "center",
+    top: "40%",
   },
+
+  txtback: {
+    width: 175,
+    height: 250,
+    backgroundColor: "rgba(52, 52, 52, 0.8)",
+  },
+
+  btnTxt2: {
+    fontFamily: "Roboto",
+    fontWeight: "bold",
+    fontSize: 30,
+    // fontWeight: "500",
+    color: "#fff",
+    textAlign: "center",
+    top:'35%',
+  },
+
   button: {
     backgroundColor: "#3A292A",
     borderRadius: 15,

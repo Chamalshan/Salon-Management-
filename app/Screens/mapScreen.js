@@ -6,12 +6,12 @@ import MapView, { Callout, Circle, Marker } from "react-native-maps"
 
 const mapScreen=()=> {
 	const [ pin, setPin ] = React.useState({
-		latitude: 37.78825,
-		longitude: -122.4324
+		latitude: 6.31111,
+		longitude: 80.9984
 	})
 	const [ region, setRegion ] = React.useState({
-		latitude: 37.78825,
-		longitude: -122.4324,
+		latitude: 6.31111,
+		longitude: 80.9984,
 		latitudeDelta: 0.0922,
 		longitudeDelta: 0.0421
 	})
@@ -50,8 +50,8 @@ const mapScreen=()=> {
 			<MapView
 				style={styles.map}
 				initialRegion={{
-					latitude: 37.78825,
-					longitude: -122.4324,
+					latitude: 6.31111,
+					longitude: 80.9984,
 					latitudeDelta: 0.0922,
 					longitudeDelta: 0.0421
 				}}

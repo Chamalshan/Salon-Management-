@@ -55,7 +55,7 @@ const HomeScreen=({navigation,route})=>{
 
     const appedit=()=>{
         let uId= id;
-        navigation.navigate('EditSalonProfile',{uId})
+        navigation.navigate('Profile',{uId});
     }
 
     return (
@@ -68,6 +68,7 @@ const HomeScreen=({navigation,route})=>{
                         onPress={() =>appnavi()}
                     >
                         <View style={styles.appointmentbox}>
+                            
                             <Text style={styles.appointmenttxt}>Appointments</Text>
                         </View>
                     </TouchableOpacity>
@@ -84,7 +85,7 @@ const HomeScreen=({navigation,route})=>{
                         onPress={() => appedit()}
                     >
                         <View style={styles.editprofilebox}>
-                            <Text style={styles.editprofiletxt}>Edit Profile</Text>
+                            <Text style={styles.editprofiletxt}> Profile</Text>
                         </View>
                     </TouchableOpacity>
                     

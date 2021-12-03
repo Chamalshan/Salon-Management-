@@ -7,7 +7,8 @@ import { Text,
     Image,
     TouchableOpacity,
     TextInput,
-    FlatList } from 'react-native';
+    FlatList,
+    SafeAreaView } from 'react-native';
 import KeyboardAvoidingWrapper from '../Components/KeyboardAvoidingWrapper';
 import * as firebase from 'firebase';
 import { Ionicons } from '@expo/vector-icons';
@@ -145,6 +146,7 @@ const CappointmentScreen=({navigation,route})=>{
 
 
     return (
+        
             <ImageBackground style={styles.container} source={require("../assets/bg-01.png")}>
             <View style={styles.appoinmentTextCont}>
                 <Text style={styles.appoinmenttext}>Appointments </Text>

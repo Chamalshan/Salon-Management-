@@ -33,7 +33,7 @@ const CDashboard=({navigation,route})=>{
     
 
   return (
-      <KeyboardAvoidingWrapper>
+     
       <Tab.Navigator
         screenOptions={{
             headerShown: false,
@@ -166,7 +166,7 @@ const CDashboard=({navigation,route})=>{
             ),
         }} /> */}
       </Tab.Navigator>
-      </KeyboardAvoidingWrapper>
+     
   );
 }
 

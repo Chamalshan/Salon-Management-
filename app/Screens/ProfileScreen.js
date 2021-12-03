@@ -19,6 +19,8 @@ const ProfileScreen=({navigation,route})=>{
     const [location, setlocation] = useState();
     const [website, setwebsite] = useState();
     const [regno, setregno] = useState();
+    const [userImg,setimg] = useState();
+    const [image, setImage] = useState(null);
     console.log(navigation)
     const {id}=route.params.uId;
     
@@ -42,11 +44,13 @@ const ProfileScreen=({navigation,route})=>{
             setlocation(documentSnapshot.data().location);
             setwebsite(documentSnapshot.data().website);
             setregno(documentSnapshot.data().regno);
+            setimg(documentSnapshot.data().userImg);
             })
             .catch(error => {
                 console.log(error);
               })
     }
+
 
     
     
@@ -58,10 +62,21 @@ const ProfileScreen=({navigation,route})=>{
             <View style={styles.profileCon}>
                 <Text style={styles.profiletext}>Profile</Text>
 
-                <Image
-                    style={styles.profilepic}
-                    source={require("../assets/pic.png")}
-                />
+                <View
+              style={styles.profilepic}>
+              <ImageBackground
+                source={{
+                  uri: image
+                    ? image
+                    : userImg ||
+                      'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
+                    
+                }}
+                style={{height: 75, width: 75}}
+                imageStyle={{borderRadius: 50}}>
+                
+                </ImageBackground>
+            </View>
                 <Text style={styles.nametext}       >{name} </Text>
                 <Text style={styles.telephonetxt}   >Telephone    : {mobileno}</Text>
                 <Text style={styles.addresstxt}     >Address        : {location}</Text>

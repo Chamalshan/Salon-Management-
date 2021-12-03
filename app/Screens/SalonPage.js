@@ -21,8 +21,10 @@ import {
 const App = ({navigation,route}) =>{
   const  id  = route.params.id;
   console.log("Salon Page", id);
-  const sid=route.params.sid;
-  console.log("Sid", sid);
+  const categoryid= route.params.categoryid;
+  console.log('Category id ' ,categoryid);
+
+
   const [city, setcity] = useState('')
   const [selectedValue, setSelectedValue] = useState("Gender");
   const [userData, setUserData] = useState(null);
@@ -64,7 +66,7 @@ const App = ({navigation,route}) =>{
   const addapp= ()=>{
 
     let sid= {said:"01mQwu24TLTW9zXNgqyTokVk69r2"};
-    navigation.navigate('CustApp',{sid,id});
+    navigation.navigate('CustApp',{sid,id,categoryid});
     
   }
   return (
@@ -73,9 +75,9 @@ const App = ({navigation,route}) =>{
       <Image source={pic} style={styles.pict} /> 
       <Text style={styles.Location}>Location : {location} </Text>
       <Text style={styles.Telephone}>Telephone : {mobileno} </Text>
-      <Text style={styles.Owner}>Website : {website}  </Text>
-      <Text style={styles.Employees}>Register No : {regno} </Text>
-      <Image source={pic2} style={styles.pictu} />
+      <Text style={styles.website}>Website : {website}  </Text>
+      <Text style={styles.regnum}>Register No : {regno} </Text>
+      {/* <Image source={pic2} style={styles.pictu} /> */}
       <Image source={pic3} style={styles.pictu1} />
       <Image source={pic4} style={styles.pictu2} />
       <Image source={pic5} style={styles.pictu3} />
@@ -105,18 +107,18 @@ const styles = StyleSheet.create({
     fontFamily:'Roboto',
     fontWeight:'bold',
     fontSize:30,
-    top:'2%',
+    // top:'2%',
     color:"#3A292A",
     position:"relative",
-    paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
-    paddingLeft: 10,
+    paddingTop:20,
   },
+
   Location:{
     fontFamily:'Roboto',
     //fontWeight:'bold',
     fontSize:20,
     top:'5%',
-    left:'-3%',
+    left:'-23%',
     color:"#3A292A",
     position:"relative",
     paddingLeft: 10,
@@ -126,33 +128,34 @@ const styles = StyleSheet.create({
     //fontWeight:'bold',
     fontSize:20,
     top:'5%',
-    left:'-3%',
+    left:'-14%',
     color:"#3A292A",
     position:"relative",
-    paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
     paddingLeft: 10,
   },
-  Owner:{
+
+  website:{
     fontFamily:'Roboto',
     //fontWeight:'bold',
     fontSize:20,
     top:'5%',
-    left:'-3%',
+    left:'-14%',
     color:"#3A292A",
     position:"relative",
-    paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
+  
     paddingLeft: 10,
   },
-  Employees:{
+
+  regnum:{
     fontFamily:'Roboto',
     //fontWeight:'bold',
     fontSize:20,
     top:'5%',
     color:"#3A292A",
     position:"relative",
-    paddingTop: Platform.OS === 'android'? StatusBar.currentHeight : 0,
+
     paddingLeft: 10,
-    left:'-3%',
+    left:'-19%',
   },
   
 
@@ -185,7 +188,8 @@ const styles = StyleSheet.create({
   pict:{ 
     width: 400, 
     height: 159,
-    top:'4%'
+    top:'3%',
+    borderRadius : 30,
   },
   pictu:{ 
     width: 400, 
@@ -195,19 +199,19 @@ const styles = StyleSheet.create({
   pictu1:{ 
     width: 75, 
     height: 75,
-    top:'8%',
+    top:'10%',
     left:'-30%'
 
   },
   pictu2:{ 
     width: 75, 
     height: 75,
-    top:'-3%'
+    top:'0.5%'
   },
   pictu3:{ 
     width: 75, 
     height: 75,
-    top:'-14%',
+    top:'-9.5%',
     left:'30%'
   },
 });
